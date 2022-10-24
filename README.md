@@ -1,2 +1,2 @@
 # ~
-atleat it works
+atleast it works
