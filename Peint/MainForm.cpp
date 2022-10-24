@@ -8,47 +8,68 @@ using namespace System::Windows::Forms;
 
 void main(array<String^>^ argv)
 {
-	Application::EnableVisualStyles;
+	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
 
 	Peint::MainForm form;
 	Application::Run(% form);
 }
 
-struct Point
-{
-	int x, y;
-	Point(int x, int y)
-	{
-		this->x = x;
-		this->y = y;
-	}
-};
-
-class PointsArray
-{
-private:
-	int index = 0;
-
-};
-
-bool isMouseDown = false;
-
-System::Void Peint::MainForm::dateTimePicker1_ValueChanged(System::Object^ sender, System::EventArgs^ e) {}
-
-System::Void Peint::MainForm::domainUpDown1_SelectedItemChanged(System::Object^ sender, System::EventArgs^ e) {}
-
-System::Void Peint::MainForm::pictureBox1_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
-{
-	isMouseDown = true;
-}
-
-System::Void Peint::MainForm::pictureBox1_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
-{
-	isMouseDown = false;
-}
-
 System::Void Peint::MainForm::MainForm_Shown(System::Object^ sender, System::EventArgs^ e)
 {
+	pen = gcnew Pen(brushColor, brushWidth);
+	brush = gcnew SolidBrush(Color::Black);
+	bmp = gcnew Bitmap(pictureBox->Width, pictureBox->Height);
+	Canvas = Graphics::FromImage(bmp);
+	Canvas->Clear(Color::White);
+	pictureBox->Image = bmp;
+}
 
+System::Void Peint::MainForm::dateTimePicker1_ValueChanged(System::Object^ sender, System::EventArgs^ e) {}
+System::Void Peint::MainForm::domainUpDown1_SelectedItemChanged(System::Object^ sender, System::EventArgs^ e) {}
+
+System::Void Peint::MainForm::pictureBox_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+{
+
+}
+
+System::Void Peint::MainForm::pictureBox_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+{
+	
+}
+
+System::Void Peint::MainForm::pictureBox_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+{
+	if (e->Button == System::Windows::Forms::MouseButtons::Left)
+	{
+		pen->Color = brushColor;
+		pen->Width = brushWidth;
+		brush->Color = brushColor;
+		switch (currentTool)
+		{
+		case Tools::Brush:
+			Canvas->DrawLine(pen, startX, startY, e->X, e->Y);
+			startX = e->X;
+			startY = e->Y;
+			Canvas->FillPie(brush, e->X - brushWidth / 2, e->Y - brushWidth / 2, brushWidth, brushWidth, 0, 360);
+			pictureBox->Image = bmp;
+			break;
+		case Tools::Spray:
+			break;
+		case Tools::Pipette:
+			break;
+		case Tools::Eraser:
+			break;
+		case Tools::Fill:
+			break;
+		case Tools::Line:
+			break;
+		case Tools::Ellipse:
+			break;
+		case Tools::Rectangle:
+			break;
+		default:
+			break;
+		}
+	}
 }

@@ -8,6 +8,7 @@ namespace Peint {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Collections::Generic;
 
 	/// <summary>
 	/// Сводка для MainForm
@@ -31,7 +32,36 @@ namespace Peint {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::PictureBox^ pictureBox1;
+
+
+	private:
+		Graphics^ Canvas;
+		Pen^ pen;
+		SolidBrush^ brush;
+		Bitmap^ bmp;
+		Bitmap^ tempBMP;
+		Color brushColor = Color::Black;
+		List <Point>^ points;
+
+		int startX;
+		int startY;
+		int brushWidth = 10;
+
+		enum class Tools {
+			Brush,
+			Spray,
+			Pipette,
+			Eraser,
+			Fill,
+			Line,
+			Ellipse,
+			Rectangle
+		};
+		Tools currentTool = Tools::Brush;
+	private: System::Windows::Forms::PictureBox^ pictureBox;
+
+
+
 	private: System::Windows::Forms::Panel^ panel1;
 	private: System::Windows::Forms::Button^ button9;
 	private: System::Windows::Forms::Button^ button8;
@@ -59,7 +89,7 @@ namespace Peint {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox = (gcnew System::Windows::Forms::PictureBox());
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
 			this->button9 = (gcnew System::Windows::Forms::Button());
 			this->button8 = (gcnew System::Windows::Forms::Button());
@@ -70,20 +100,21 @@ namespace Peint {
 			this->button3 = (gcnew System::Windows::Forms::Button());
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->button1 = (gcnew System::Windows::Forms::Button());
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox))->BeginInit();
 			this->panel1->SuspendLayout();
 			this->SuspendLayout();
 			// 
-			// pictureBox1
+			// pictureBox
 			// 
-			this->pictureBox1->Dock = System::Windows::Forms::DockStyle::Left;
-			this->pictureBox1->Location = System::Drawing::Point(0, 0);
-			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(831, 511);
-			this->pictureBox1->TabIndex = 0;
-			this->pictureBox1->TabStop = false;
-			this->pictureBox1->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox1_MouseDown);
-			this->pictureBox1->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox1_MouseUp);
+			this->pictureBox->Dock = System::Windows::Forms::DockStyle::Left;
+			this->pictureBox->Location = System::Drawing::Point(0, 0);
+			this->pictureBox->Name = L"pictureBox";
+			this->pictureBox->Size = System::Drawing::Size(831, 511);
+			this->pictureBox->TabIndex = 0;
+			this->pictureBox->TabStop = false;
+			this->pictureBox->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_MouseDown);
+			this->pictureBox->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_MouseMove);
+			this->pictureBox->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_MouseUp);
 			// 
 			// panel1
 			// 
@@ -201,7 +232,7 @@ namespace Peint {
 			this->BackColor = System::Drawing::SystemColors::Control;
 			this->ClientSize = System::Drawing::Size(984, 511);
 			this->Controls->Add(this->panel1);
-			this->Controls->Add(this->pictureBox1);
+			this->Controls->Add(this->pictureBox);
 			this->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->MaximizeBox = false;
@@ -209,7 +240,7 @@ namespace Peint {
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"MainForm";
 			this->Shown += gcnew System::EventHandler(this, &MainForm::MainForm_Shown);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox))->EndInit();
 			this->panel1->ResumeLayout(false);
 			this->ResumeLayout(false);
 
@@ -217,8 +248,11 @@ namespace Peint {
 #pragma endregion
 		private: System::Void dateTimePicker1_ValueChanged(System::Object^ sender, System::EventArgs^ e);
 		private: System::Void domainUpDown1_SelectedItemChanged(System::Object^ sender, System::EventArgs^ e);
-		private: System::Void pictureBox1_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
-		private: System::Void pictureBox1_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+		private: System::Void pictureBox_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+		private: System::Void pictureBox_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 		private: System::Void MainForm_Shown(System::Object^ sender, System::EventArgs^ e);
+		private: System::Void pictureBox_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+private: System::Void pictureBox1_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+}
 };
 }
