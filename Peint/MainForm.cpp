@@ -28,9 +28,25 @@ System::Void Peint::MainForm::MainForm_Shown(System::Object^ sender, System::Eve
 System::Void Peint::MainForm::dateTimePicker1_ValueChanged(System::Object^ sender, System::EventArgs^ e) {}
 System::Void Peint::MainForm::domainUpDown1_SelectedItemChanged(System::Object^ sender, System::EventArgs^ e) {}
 
+System::Void Peint::MainForm::ColorButton1_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	brushColor = ColorButton1->BackColor;
+}
+
+System::Void Peint::MainForm::ColorButton2_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	brushColor = ColorButton2->BackColor;
+}
+
 System::Void Peint::MainForm::pictureBox_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {
-
+	startX = e->X;
+	startY = e->Y;
+	pen->Color = brushColor;
+	pen->Width = brushWidth;
+	brush->Color = brushColor;
+	Canvas->FillPie(brush, e->X - brushWidth / 2, e->Y - brushWidth / 2, brushWidth, brushWidth, 0, 360);
+	pictureBox->Image = bmp;
 }
 
 System::Void Peint::MainForm::pictureBox_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
@@ -42,9 +58,7 @@ System::Void Peint::MainForm::pictureBox_MouseMove(System::Object^ sender, Syste
 {
 	if (e->Button == System::Windows::Forms::MouseButtons::Left)
 	{
-		pen->Color = brushColor;
-		pen->Width = brushWidth;
-		brush->Color = brushColor;
+		
 		switch (currentTool)
 		{
 		case Tools::Brush:
