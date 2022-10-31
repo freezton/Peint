@@ -36,6 +36,7 @@ namespace Peint {
 
 	private:
 		Graphics^ Canvas;
+		Graphics^ tempCanvas;
 		Pen^ pen;
 		SolidBrush^ brush;
 		Bitmap^ bmp;
@@ -58,6 +59,11 @@ namespace Peint {
 			Rectangle
 		};
 		Tools currentTool = Tools::Brush;
+
+		Point rectStart;
+		Point rectEnd;
+		Drawing::Size rectSize;
+
 	private: System::Windows::Forms::PictureBox^ pictureBox;
 
 	private: System::Windows::Forms::ToolStripMenuItem^ fileToolStripMenuItem;
@@ -67,6 +73,12 @@ namespace Peint {
 	private: System::Windows::Forms::Panel^ panel1;
 	private: System::Windows::Forms::Button^ ColorButton2;
 	private: System::Windows::Forms::Button^ ColorButton1;
+	private: System::Windows::Forms::Panel^ pictureBoxPanel;
+	private: System::Windows::Forms::TrackBar^ brushWidthBar;
+	private: System::Windows::Forms::NumericUpDown^ brushWidhtUpDown;
+	private: System::Windows::Forms::Button^ rectangleButton;
+	private: System::Windows::Forms::Button^ brushButton;
+
 
 
 	protected:
@@ -77,7 +89,7 @@ namespace Peint {
 		/// <summary>
 		/// Обязательная переменная конструктора.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+		System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -94,16 +106,24 @@ namespace Peint {
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
 			this->ColorButton2 = (gcnew System::Windows::Forms::Button());
 			this->ColorButton1 = (gcnew System::Windows::Forms::Button());
+			this->pictureBoxPanel = (gcnew System::Windows::Forms::Panel());
+			this->brushWidthBar = (gcnew System::Windows::Forms::TrackBar());
+			this->brushWidhtUpDown = (gcnew System::Windows::Forms::NumericUpDown());
+			this->rectangleButton = (gcnew System::Windows::Forms::Button());
+			this->brushButton = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox))->BeginInit();
 			this->menuStrip2->SuspendLayout();
 			this->panel1->SuspendLayout();
+			this->pictureBoxPanel->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->brushWidthBar))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->brushWidhtUpDown))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// pictureBox
 			// 
-			this->pictureBox->Location = System::Drawing::Point(0, 115);
+			this->pictureBox->Location = System::Drawing::Point(-1, -1);
 			this->pictureBox->Name = L"pictureBox";
-			this->pictureBox->Size = System::Drawing::Size(984, 397);
+			this->pictureBox->Size = System::Drawing::Size(963, 400);
 			this->pictureBox->TabIndex = 0;
 			this->pictureBox->TabStop = false;
 			this->pictureBox->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::pictureBox_MouseDown);
@@ -146,18 +166,18 @@ namespace Peint {
 			this->panel1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->panel1->Controls->Add(this->ColorButton2);
 			this->panel1->Controls->Add(this->ColorButton1);
-			this->panel1->Location = System::Drawing::Point(433, 27);
+			this->panel1->Location = System::Drawing::Point(591, 27);
 			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(200, 85);
+			this->panel1->Size = System::Drawing::Size(200, 69);
 			this->panel1->TabIndex = 3;
 			// 
 			// ColorButton2
 			// 
-			this->ColorButton2->BackColor = System::Drawing::Color::Red;
+			this->ColorButton2->BackColor = System::Drawing::Color::Fuchsia;
 			this->ColorButton2->FlatAppearance->BorderColor = System::Drawing::Color::White;
 			this->ColorButton2->FlatAppearance->BorderSize = 3;
 			this->ColorButton2->ForeColor = System::Drawing::SystemColors::ControlText;
-			this->ColorButton2->Location = System::Drawing::Point(34, 3);
+			this->ColorButton2->Location = System::Drawing::Point(3, 39);
 			this->ColorButton2->Name = L"ColorButton2";
 			this->ColorButton2->Size = System::Drawing::Size(25, 25);
 			this->ColorButton2->TabIndex = 5;
@@ -175,6 +195,57 @@ namespace Peint {
 			this->ColorButton1->UseVisualStyleBackColor = false;
 			this->ColorButton1->Click += gcnew System::EventHandler(this, &MainForm::ColorButton1_Click);
 			// 
+			// pictureBoxPanel
+			// 
+			this->pictureBoxPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->pictureBoxPanel->Controls->Add(this->pictureBox);
+			this->pictureBoxPanel->Location = System::Drawing::Point(9, 99);
+			this->pictureBoxPanel->Name = L"pictureBoxPanel";
+			this->pictureBoxPanel->Size = System::Drawing::Size(963, 400);
+			this->pictureBoxPanel->TabIndex = 6;
+			// 
+			// brushWidthBar
+			// 
+			this->brushWidthBar->Location = System::Drawing::Point(165, 27);
+			this->brushWidthBar->Maximum = 30;
+			this->brushWidthBar->Minimum = 1;
+			this->brushWidthBar->Name = L"brushWidthBar";
+			this->brushWidthBar->Size = System::Drawing::Size(152, 45);
+			this->brushWidthBar->TabIndex = 7;
+			this->brushWidthBar->Value = 10;
+			this->brushWidthBar->ValueChanged += gcnew System::EventHandler(this, &MainForm::brushWidthBar_ValueChanged);
+			// 
+			// brushWidhtUpDown
+			// 
+			this->brushWidhtUpDown->Location = System::Drawing::Point(165, 67);
+			this->brushWidhtUpDown->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 30, 0, 0, 0 });
+			this->brushWidhtUpDown->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			this->brushWidhtUpDown->Name = L"brushWidhtUpDown";
+			this->brushWidhtUpDown->Size = System::Drawing::Size(152, 20);
+			this->brushWidhtUpDown->TabIndex = 1;
+			this->brushWidhtUpDown->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
+			this->brushWidhtUpDown->ValueChanged += gcnew System::EventHandler(this, &MainForm::brushWidhtUpDown_ValueChanged);
+			// 
+			// rectangleButton
+			// 
+			this->rectangleButton->Location = System::Drawing::Point(96, 49);
+			this->rectangleButton->Name = L"rectangleButton";
+			this->rectangleButton->Size = System::Drawing::Size(40, 38);
+			this->rectangleButton->TabIndex = 8;
+			this->rectangleButton->Text = L"Rect";
+			this->rectangleButton->UseVisualStyleBackColor = true;
+			this->rectangleButton->Click += gcnew System::EventHandler(this, &MainForm::rectangleButton_Click);
+			// 
+			// brushButton
+			// 
+			this->brushButton->Location = System::Drawing::Point(38, 49);
+			this->brushButton->Name = L"brushButton";
+			this->brushButton->Size = System::Drawing::Size(42, 38);
+			this->brushButton->TabIndex = 9;
+			this->brushButton->Text = L"br";
+			this->brushButton->UseVisualStyleBackColor = true;
+			this->brushButton->Click += gcnew System::EventHandler(this, &MainForm::brushButton_Click);
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -182,8 +253,12 @@ namespace Peint {
 			this->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
 			this->BackColor = System::Drawing::SystemColors::MenuBar;
 			this->ClientSize = System::Drawing::Size(984, 511);
+			this->Controls->Add(this->brushButton);
+			this->Controls->Add(this->rectangleButton);
+			this->Controls->Add(this->brushWidhtUpDown);
+			this->Controls->Add(this->brushWidthBar);
+			this->Controls->Add(this->pictureBoxPanel);
 			this->Controls->Add(this->panel1);
-			this->Controls->Add(this->pictureBox);
 			this->Controls->Add(this->menuStrip2);
 			this->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
@@ -196,18 +271,25 @@ namespace Peint {
 			this->menuStrip2->ResumeLayout(false);
 			this->menuStrip2->PerformLayout();
 			this->panel1->ResumeLayout(false);
+			this->pictureBoxPanel->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->brushWidthBar))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->brushWidhtUpDown))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
-		private: System::Void dateTimePicker1_ValueChanged(System::Object^ sender, System::EventArgs^ e);
-		private: System::Void domainUpDown1_SelectedItemChanged(System::Object^ sender, System::EventArgs^ e);
-		private: System::Void pictureBox_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
-		private: System::Void pictureBox_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
-		private: System::Void MainForm_Shown(System::Object^ sender, System::EventArgs^ e);
-		private: System::Void pictureBox_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
-private: System::Void ColorButton1_Click(System::Object^ sender, System::EventArgs^ e);
-private: System::Void ColorButton2_Click(System::Object^ sender, System::EventArgs^ e);
-};
+	private: System::Void dateTimePicker1_ValueChanged(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void domainUpDown1_SelectedItemChanged(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void pictureBox_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+	private: System::Void pictureBox_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+	private: System::Void MainForm_Shown(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void pictureBox_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+	private: System::Void ColorButton1_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void ColorButton2_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void brushWidthBar_ValueChanged(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void brushWidhtUpDown_ValueChanged(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void rectangleButton_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void brushButton_Click(System::Object^ sender, System::EventArgs^ e);
+	};
 }
