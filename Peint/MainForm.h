@@ -1,3 +1,5 @@
+#include "History.h"
+
 #pragma once
 
 namespace Peint {
@@ -43,6 +45,7 @@ namespace Peint {
 		Bitmap^ tempBMP;
 		Color brushColor = Color::Black;
 		List <Point>^ points;
+		History^ history;
 
 		int startX;
 		int startY;
@@ -60,9 +63,9 @@ namespace Peint {
 		};
 		Tools currentTool = Tools::Brush;
 
-		Point rectStart;
-		Point rectEnd;
-		Drawing::Size rectSize;
+		//Point rectStart;
+		//Point rectEnd;
+		//Drawing::Size rectSize;
 
 	private: System::Windows::Forms::PictureBox^ pictureBox;
 
@@ -78,6 +81,7 @@ namespace Peint {
 	private: System::Windows::Forms::NumericUpDown^ brushWidhtUpDown;
 	private: System::Windows::Forms::Button^ rectangleButton;
 	private: System::Windows::Forms::Button^ brushButton;
+	private: System::Windows::Forms::Button^ ellipseButton;
 
 
 
@@ -111,6 +115,7 @@ namespace Peint {
 			this->brushWidhtUpDown = (gcnew System::Windows::Forms::NumericUpDown());
 			this->rectangleButton = (gcnew System::Windows::Forms::Button());
 			this->brushButton = (gcnew System::Windows::Forms::Button());
+			this->ellipseButton = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox))->BeginInit();
 			this->menuStrip2->SuspendLayout();
 			this->panel1->SuspendLayout();
@@ -154,6 +159,7 @@ namespace Peint {
 			this->backToolStripMenuItem->Name = L"backToolStripMenuItem";
 			this->backToolStripMenuItem->Size = System::Drawing::Size(44, 20);
 			this->backToolStripMenuItem->Text = L"Back";
+			this->backToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::backToolStripMenuItem_Click);
 			// 
 			// aheadToolStripMenuItem
 			// 
@@ -246,6 +252,16 @@ namespace Peint {
 			this->brushButton->UseVisualStyleBackColor = true;
 			this->brushButton->Click += gcnew System::EventHandler(this, &MainForm::brushButton_Click);
 			// 
+			// ellipseButton
+			// 
+			this->ellipseButton->Location = System::Drawing::Point(363, 49);
+			this->ellipseButton->Name = L"ellipseButton";
+			this->ellipseButton->Size = System::Drawing::Size(40, 38);
+			this->ellipseButton->TabIndex = 10;
+			this->ellipseButton->Text = L"elips";
+			this->ellipseButton->UseVisualStyleBackColor = true;
+			this->ellipseButton->Click += gcnew System::EventHandler(this, &MainForm::ellipseButton_Click);
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -253,6 +269,7 @@ namespace Peint {
 			this->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
 			this->BackColor = System::Drawing::SystemColors::MenuBar;
 			this->ClientSize = System::Drawing::Size(984, 511);
+			this->Controls->Add(this->ellipseButton);
 			this->Controls->Add(this->brushButton);
 			this->Controls->Add(this->rectangleButton);
 			this->Controls->Add(this->brushWidhtUpDown);
@@ -267,6 +284,7 @@ namespace Peint {
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"MainForm";
 			this->Shown += gcnew System::EventHandler(this, &MainForm::MainForm_Shown);
+			this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MainForm::MainForm_Paint);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox))->EndInit();
 			this->menuStrip2->ResumeLayout(false);
 			this->menuStrip2->PerformLayout();
@@ -291,5 +309,11 @@ namespace Peint {
 	private: System::Void brushWidhtUpDown_ValueChanged(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void rectangleButton_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void brushButton_Click(System::Object^ sender, System::EventArgs^ e);
-	};
+	private: System::Void backToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+private: System::Void MainForm_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
+	//MainFormDrawBorder(e->Graphics, ClientRectangle, Color->BLACK, ButtonBorderStyle->Solid);
+	
+}
+private: System::Void ellipseButton_Click(System::Object^ sender, System::EventArgs^ e);
+};
 }

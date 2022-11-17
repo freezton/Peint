@@ -1,5 +1,4 @@
 #include "MainForm.h"
-#include <Windows.h>
 #include <stdio.h>
 #include <iostream>
 #include <string>
@@ -9,7 +8,7 @@ using namespace System;
 using namespace System::Windows::Forms;
 using namespace Peint;
 
-void main(array<String^>^ argv)
+void main()
 {
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
@@ -23,6 +22,7 @@ System::Void MainForm::MainForm_Shown(System::Object^ sender, System::EventArgs^
 	pen = gcnew Pen(brushColor, (float)brushWidth);
 	brush = gcnew SolidBrush(Color::Black);
 	bmp = gcnew Bitmap(pictureBox->Width, pictureBox->Height);
+	history = gcnew History();
 	Canvas = Graphics::FromImage(bmp);
 	Canvas->Clear(Color::White);
 	pictureBox->Image = bmp;
@@ -57,35 +57,37 @@ System::Void MainForm::brushWidhtUpDown_ValueChanged(System::Object^ sender, Sys
 
 System::Void MainForm::pictureBox_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {
-	startX = e->X;
-	startY = e->Y;
-	brush->Color = brushColor;
-	pen->Color = brushColor;
-	pen->Width = (float)brushWidth;
-	switch (currentTool)
+	if (e->Button == System::Windows::Forms::MouseButtons::Left)
 	{
-	case Tools::Brush:
-		Canvas->FillPie(brush, e->X - brushWidth / 2, e->Y - brushWidth / 2, brushWidth, brushWidth, 0, 360);
-		pictureBox->Image = bmp;
-		break;
-	case Tools::Spray:
-		break;
-	case Tools::Pipette:
-		break;
-	case Tools::Eraser:
-		break;
-	case Tools::Fill:
-		break;
-	case Tools::Line:
-		break;
-	case Tools::Ellipse:
-		break;
-	case Tools::Rectangle:
-		break;
-	default:
-		break;
+		startX = e->X;
+		startY = e->Y;
+		brush->Color = brushColor;
+		pen->Color = brushColor;
+		pen->Width = (float)brushWidth;
+		switch (currentTool)
+		{
+		case Tools::Brush:
+			Canvas->FillPie(brush, e->X - brushWidth / 2, e->Y - brushWidth / 2, brushWidth, brushWidth, 0, 360);
+			pictureBox->Image = bmp;
+			break;
+		case Tools::Spray:
+			break;
+		case Tools::Pipette:
+			break;
+		case Tools::Eraser:
+			break;
+		case Tools::Fill:
+			break;
+		case Tools::Line:
+			break;
+		case Tools::Ellipse:
+			break;
+		case Tools::Rectangle:
+			break;
+		default:
+			break;
+		}
 	}
-	
 }
 
 System::Void MainForm::pictureBox_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
@@ -105,21 +107,36 @@ System::Void MainForm::pictureBox_MouseUp(System::Object^ sender, System::Window
 	case Tools::Line:
 		break;
 	case Tools::Ellipse:
+		if (tempBMP != nullptr)
+		{
+			bmp = (Bitmap^)tempBMP->Clone();
+			Canvas = Graphics::FromImage(bmp);
+			pictureBox->Image = bmp;
+		}
 		break;
 	case Tools::Rectangle:
-		bmp = (Bitmap^)tempBMP->Clone();
-		Canvas = Graphics::FromImage(bmp);
-		pictureBox->Image = bmp;
+		if (tempBMP != nullptr)
+		{
+			bmp = (Bitmap^)tempBMP->Clone();
+			Canvas = Graphics::FromImage(bmp);
+			pictureBox->Image = bmp;
+		}
 		break;
 	default:
 		break;
 	}
+	history->push((Bitmap^)bmp->Clone());
 }
 
 System::Void MainForm::pictureBox_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {
 	if (e->Button == System::Windows::Forms::MouseButtons::Left)
 	{
+		Drawing::Rectangle rect;
+		rect.X = Math::Min(e->X, startX);
+		rect.Y = Math::Min(e->Y, startY);
+		rect.Width = Math::Abs(startX - e->X);
+		rect.Height = Math::Abs(startY - e->Y);
 		switch (currentTool)
 		{
 		case Tools::Brush:
@@ -140,28 +157,25 @@ System::Void MainForm::pictureBox_MouseMove(System::Object^ sender, System::Wind
 		case Tools::Line:
 			break;
 		case Tools::Ellipse:
+			tempBMP = (Bitmap^)bmp->Clone();
+			tempCanvas = Graphics::FromImage(tempBMP);
+			tempCanvas->DrawEllipse(pen, rect);
+			pictureBox->Image = tempBMP;
 			break;
 		case Tools::Rectangle:
 		{
 			tempBMP = (Bitmap^)bmp->Clone();
 			tempCanvas = Graphics::FromImage(tempBMP);
-			rectStart.X = Math::Min(e->X, startX);
-			rectStart.Y = Math::Min(e->Y, startY);
-			rectEnd.X = Math::Max(e->X, startX);
-			rectEnd.Y = Math::Max(e->Y, startY);
-			rectSize.Width = Math::Abs(startX - e->X);
-			rectSize.Height = Math::Abs(startY - e->Y);
-
-			if (rectSize.Width != 0 && rectSize.Height != 0) {
-				tempCanvas->DrawRectangle(pen, rectStart.X, rectStart.Y, rectSize.Width, rectSize.Height);
+			if (rect.Width != 0 && rect.Height != 0) {
+				tempCanvas->DrawRectangle(pen, rect);
 				tempCanvas->FillPie(brush, e->X - brushWidth / 2, e->Y - brushWidth / 2, brushWidth, brushWidth, 0, 360);
 			}
 			else
 			{
-				if (rectSize.Width == 0)
-					tempCanvas->DrawLine(pen, rectStart.X, rectStart.Y - brushWidth / 2, rectEnd.X, rectEnd.Y + brushWidth / 2);
+				if (rect.Width == 0)
+					tempCanvas->DrawLine(pen, rect.X, rect.Y - brushWidth / 2, rect.X + rect.Width, rect.Y + rect.Height + brushWidth / 2);
 				else 
-					tempCanvas->DrawLine(pen, rectStart.X - brushWidth / 2, rectStart.Y, rectEnd.X + brushWidth / 2, rectEnd.Y);
+					tempCanvas->DrawLine(pen, rect.X - brushWidth / 2, rect.Y, rect.X + rect.Width + brushWidth / 2, rect.Y + rect.Height);
 			}
 			pictureBox->Image = tempBMP;
 			break;
@@ -172,6 +186,13 @@ System::Void MainForm::pictureBox_MouseMove(System::Object^ sender, System::Wind
 	}
 }
 
+System::Void MainForm::backToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	bmp = (Bitmap^)history->goBack()->Clone();
+	pictureBox->Image = (Bitmap^)bmp->Clone();
+	Canvas = Graphics::FromImage(bmp);
+}
+
 System::Void MainForm::brushButton_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	currentTool = Tools::Brush;
@@ -180,4 +201,9 @@ System::Void MainForm::brushButton_Click(System::Object^ sender, System::EventAr
 System::Void MainForm::rectangleButton_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	currentTool = Tools::Rectangle;
+}
+
+System::Void MainForm::ellipseButton_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	currentTool = Tools::Ellipse;
 }
