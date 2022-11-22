@@ -13,6 +13,11 @@ System::Void History::push(System::Drawing::Bitmap^ bmp)
 	}
 }
 
+System::Boolean History::hasNext()
+{
+	return true;
+}
+
 System::Drawing::Bitmap^ History::goBack()
 {
 	return history[--current];

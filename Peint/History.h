@@ -35,4 +35,6 @@ public:
 
 	System::Drawing::Bitmap^ goForward();
 
+	System::Boolean hasNext();
+
 };

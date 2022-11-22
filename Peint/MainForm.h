@@ -1,4 +1,5 @@
 #include "History.h"
+#include "Stack.h"
 
 #pragma once
 
@@ -46,6 +47,7 @@ namespace Peint {
 		Color brushColor = Color::Black;
 		List <Point>^ points;
 		History^ history;
+		PointStack^ stack;
 
 		int startX;
 		int startY;
@@ -82,6 +84,11 @@ namespace Peint {
 	private: System::Windows::Forms::Button^ rectangleButton;
 	private: System::Windows::Forms::Button^ brushButton;
 	private: System::Windows::Forms::Button^ ellipseButton;
+	private: System::Windows::Forms::Button^ lineButton;
+	private: System::Windows::Forms::Button^ fillButton;
+	private: System::Windows::Forms::Button^ eraserButton;
+	private: System::Windows::Forms::Button^ pipetteButton;
+
 
 
 
@@ -116,6 +123,10 @@ namespace Peint {
 			this->rectangleButton = (gcnew System::Windows::Forms::Button());
 			this->brushButton = (gcnew System::Windows::Forms::Button());
 			this->ellipseButton = (gcnew System::Windows::Forms::Button());
+			this->lineButton = (gcnew System::Windows::Forms::Button());
+			this->fillButton = (gcnew System::Windows::Forms::Button());
+			this->eraserButton = (gcnew System::Windows::Forms::Button());
+			this->pipetteButton = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox))->BeginInit();
 			this->menuStrip2->SuspendLayout();
 			this->panel1->SuspendLayout();
@@ -212,7 +223,7 @@ namespace Peint {
 			// 
 			// brushWidthBar
 			// 
-			this->brushWidthBar->Location = System::Drawing::Point(165, 27);
+			this->brushWidthBar->Location = System::Drawing::Point(418, 31);
 			this->brushWidthBar->Maximum = 30;
 			this->brushWidthBar->Minimum = 1;
 			this->brushWidthBar->Name = L"brushWidthBar";
@@ -223,7 +234,7 @@ namespace Peint {
 			// 
 			// brushWidhtUpDown
 			// 
-			this->brushWidhtUpDown->Location = System::Drawing::Point(165, 67);
+			this->brushWidhtUpDown->Location = System::Drawing::Point(418, 71);
 			this->brushWidhtUpDown->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 30, 0, 0, 0 });
 			this->brushWidhtUpDown->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->brushWidhtUpDown->Name = L"brushWidhtUpDown";
@@ -234,17 +245,17 @@ namespace Peint {
 			// 
 			// rectangleButton
 			// 
-			this->rectangleButton->Location = System::Drawing::Point(96, 49);
+			this->rectangleButton->Location = System::Drawing::Point(72, 49);
 			this->rectangleButton->Name = L"rectangleButton";
 			this->rectangleButton->Size = System::Drawing::Size(40, 38);
 			this->rectangleButton->TabIndex = 8;
-			this->rectangleButton->Text = L"Rect";
+			this->rectangleButton->Text = L"rect";
 			this->rectangleButton->UseVisualStyleBackColor = true;
 			this->rectangleButton->Click += gcnew System::EventHandler(this, &MainForm::rectangleButton_Click);
 			// 
 			// brushButton
 			// 
-			this->brushButton->Location = System::Drawing::Point(38, 49);
+			this->brushButton->Location = System::Drawing::Point(24, 49);
 			this->brushButton->Name = L"brushButton";
 			this->brushButton->Size = System::Drawing::Size(42, 38);
 			this->brushButton->TabIndex = 9;
@@ -254,13 +265,53 @@ namespace Peint {
 			// 
 			// ellipseButton
 			// 
-			this->ellipseButton->Location = System::Drawing::Point(363, 49);
+			this->ellipseButton->Location = System::Drawing::Point(118, 49);
 			this->ellipseButton->Name = L"ellipseButton";
 			this->ellipseButton->Size = System::Drawing::Size(40, 38);
 			this->ellipseButton->TabIndex = 10;
 			this->ellipseButton->Text = L"elips";
 			this->ellipseButton->UseVisualStyleBackColor = true;
 			this->ellipseButton->Click += gcnew System::EventHandler(this, &MainForm::ellipseButton_Click);
+			// 
+			// lineButton
+			// 
+			this->lineButton->Location = System::Drawing::Point(164, 49);
+			this->lineButton->Name = L"lineButton";
+			this->lineButton->Size = System::Drawing::Size(40, 38);
+			this->lineButton->TabIndex = 11;
+			this->lineButton->Text = L"line";
+			this->lineButton->UseVisualStyleBackColor = true;
+			this->lineButton->Click += gcnew System::EventHandler(this, &MainForm::lineButton_Click);
+			// 
+			// fillButton
+			// 
+			this->fillButton->Location = System::Drawing::Point(210, 49);
+			this->fillButton->Name = L"fillButton";
+			this->fillButton->Size = System::Drawing::Size(40, 38);
+			this->fillButton->TabIndex = 12;
+			this->fillButton->Text = L"fill";
+			this->fillButton->UseVisualStyleBackColor = true;
+			this->fillButton->Click += gcnew System::EventHandler(this, &MainForm::fillButton_Click);
+			// 
+			// eraserButton
+			// 
+			this->eraserButton->Location = System::Drawing::Point(256, 49);
+			this->eraserButton->Name = L"eraserButton";
+			this->eraserButton->Size = System::Drawing::Size(40, 38);
+			this->eraserButton->TabIndex = 13;
+			this->eraserButton->Text = L"eraser";
+			this->eraserButton->UseVisualStyleBackColor = true;
+			this->eraserButton->Click += gcnew System::EventHandler(this, &MainForm::eraserButton_Click);
+			// 
+			// pipetteButton
+			// 
+			this->pipetteButton->Location = System::Drawing::Point(302, 49);
+			this->pipetteButton->Name = L"pipetteButton";
+			this->pipetteButton->Size = System::Drawing::Size(40, 38);
+			this->pipetteButton->TabIndex = 14;
+			this->pipetteButton->Text = L"pip";
+			this->pipetteButton->UseVisualStyleBackColor = true;
+			this->pipetteButton->Click += gcnew System::EventHandler(this, &MainForm::pipetteButton_Click);
 			// 
 			// MainForm
 			// 
@@ -269,6 +320,10 @@ namespace Peint {
 			this->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
 			this->BackColor = System::Drawing::SystemColors::MenuBar;
 			this->ClientSize = System::Drawing::Size(984, 511);
+			this->Controls->Add(this->pipetteButton);
+			this->Controls->Add(this->eraserButton);
+			this->Controls->Add(this->fillButton);
+			this->Controls->Add(this->lineButton);
 			this->Controls->Add(this->ellipseButton);
 			this->Controls->Add(this->brushButton);
 			this->Controls->Add(this->rectangleButton);
@@ -311,9 +366,11 @@ namespace Peint {
 	private: System::Void brushButton_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void backToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 private: System::Void MainForm_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
-	//MainFormDrawBorder(e->Graphics, ClientRectangle, Color->BLACK, ButtonBorderStyle->Solid);
-	
 }
 private: System::Void ellipseButton_Click(System::Object^ sender, System::EventArgs^ e);
+private: System::Void lineButton_Click(System::Object^ sender, System::EventArgs^ e);
+private: System::Void fillButton_Click(System::Object^ sender, System::EventArgs^ e);
+private: System::Void eraserButton_Click(System::Object^ sender, System::EventArgs^ e);
+private: System::Void pipetteButton_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }

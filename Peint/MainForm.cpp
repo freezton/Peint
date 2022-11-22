@@ -3,9 +3,11 @@
 #include <iostream>
 #include <string>
 #include <time.h>
+#include <stack>
 
 using namespace System;
 using namespace System::Windows::Forms;
+using namespace System::Collections::Generic;
 using namespace Peint;
 
 void main()
@@ -17,6 +19,11 @@ void main()
 	Application::Run(% form);
 }
 
+bool compareColors(Color first, Color second)
+{
+	return (first.R == second.R) && (first.G == second.G) && (first.B == second.B);
+}
+
 System::Void MainForm::MainForm_Shown(System::Object^ sender, System::EventArgs^ e)
 {
 	pen = gcnew Pen(brushColor, (float)brushWidth);
@@ -26,6 +33,11 @@ System::Void MainForm::MainForm_Shown(System::Object^ sender, System::EventArgs^
 	Canvas = Graphics::FromImage(bmp);
 	Canvas->Clear(Color::White);
 	pictureBox->Image = bmp;
+
+	//stack = gcnew PointStack();
+	//stack->push(Point(3, 3));
+	//stack->push(Point(2, 4));
+	//stack->push(Point(1, 5));
 	//brushWidthLabel->Text = std::to_string(brushWidthBar->Value);
 }
 
@@ -73,12 +85,49 @@ System::Void MainForm::pictureBox_MouseDown(System::Object^ sender, System::Wind
 		case Tools::Spray:
 			break;
 		case Tools::Pipette:
+			brushColor = bmp->GetPixel(e->X, e->Y);
+			pen->Color = brushColor;
+			brush->Color = brushColor;
+			brushButton_Click(sender, e);
 			break;
 		case Tools::Eraser:
+			pen->Color = Color::White;
+			brush->Color = Color::White;
+			Canvas->FillPie(brush, e->X - brushWidth / 2, e->Y - brushWidth / 2, brushWidth, brushWidth, 0, 360);
+			pictureBox->Image = bmp;
 			break;
 		case Tools::Fill:
+		{
+			
+			Color targetColor = bmp->GetPixel(e->X, e->Y);
+			if (!compareColors(targetColor, brushColor)) 
+			{
+				Generic::Stack<Point>^ pixels = gcnew Generic::Stack<Point>();
+				pixels->Push(Point(e->X, e->Y));
+				while (pixels->Count > 0)
+				{
+					Point a = pixels->Pop();
+					if (a.X < bmp->Width && a.X > 0 &&
+						a.Y < bmp->Height && a.Y > 0)//make sure we stay within bounds
+					{
+
+						if (bmp->GetPixel(a.X, a.Y) == targetColor)
+						{
+							bmp->SetPixel(a.X, a.Y, brushColor);
+							pixels->Push(Point(a.X - 1, a.Y));
+							pixels->Push(Point(a.X + 1, a.Y));
+							pixels->Push(Point(a.X, a.Y - 1));
+							pixels->Push(Point(a.X, a.Y + 1));
+						}
+					}
+				}
+				pictureBox->Refresh(); //refresh our main picture box
+			}
 			break;
+		}
 		case Tools::Line:
+			Canvas->FillPie(brush, e->X - brushWidth / 2, e->Y - brushWidth / 2, brushWidth, brushWidth, 0, 360);
+			pictureBox->Image = bmp;
 			break;
 		case Tools::Ellipse:
 			break;
@@ -105,6 +154,12 @@ System::Void MainForm::pictureBox_MouseUp(System::Object^ sender, System::Window
 	case Tools::Fill:
 		break;
 	case Tools::Line:
+		if (tempBMP != nullptr)
+		{
+			bmp = (Bitmap^)tempBMP->Clone();
+			Canvas = Graphics::FromImage(bmp);
+			pictureBox->Image = bmp;
+		}
 		break;
 	case Tools::Ellipse:
 		if (tempBMP != nullptr)
@@ -151,10 +206,20 @@ System::Void MainForm::pictureBox_MouseMove(System::Object^ sender, System::Wind
 		case Tools::Pipette:
 			break;
 		case Tools::Eraser:
+			Canvas->DrawLine(pen, startX, startY, e->X, e->Y);
+			startX = e->X;
+			startY = e->Y;
+			Canvas->FillPie(brush, e->X - brushWidth / 2, e->Y - brushWidth / 2, brushWidth, brushWidth, 0, 360);
+			pictureBox->Image = bmp;
 			break;
 		case Tools::Fill:
 			break;
 		case Tools::Line:
+			tempBMP = (Bitmap^)bmp->Clone();
+			tempCanvas = Graphics::FromImage(tempBMP);
+			tempCanvas->DrawLine(pen, startX, startY, e->X, e->Y);
+			tempCanvas->FillPie(brush, e->X - brushWidth / 2, e->Y - brushWidth / 2, brushWidth, brushWidth, 0, 360);
+			pictureBox->Image = tempBMP;
 			break;
 		case Tools::Ellipse:
 			tempBMP = (Bitmap^)bmp->Clone();
@@ -206,4 +271,24 @@ System::Void MainForm::rectangleButton_Click(System::Object^ sender, System::Eve
 System::Void MainForm::ellipseButton_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	currentTool = Tools::Ellipse;
+}
+
+System::Void MainForm::lineButton_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	currentTool = Tools::Line;
+}
+
+System::Void MainForm::fillButton_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	currentTool = Tools::Fill;
+}
+
+System::Void MainForm::eraserButton_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	currentTool = Tools::Eraser;
+}
+
+System::Void MainForm::pipetteButton_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	currentTool = Tools::Pipette;
 }
