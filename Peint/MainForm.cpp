@@ -24,6 +24,217 @@ bool compareColors(Color first, Color second)
 	return (first.R == second.R) && (first.G == second.G) && (first.B == second.B);
 }
 
+System::Void MainForm::colorButton1_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton1->BackColor;
+	currentColor->BackColor = colorButton1->BackColor;
+}
+System::Void MainForm::colorButton2_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton2->BackColor;
+	currentColor->BackColor = colorButton2->BackColor;
+}
+System::Void MainForm::colorButton3_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton3->BackColor;
+	currentColor->BackColor = colorButton3->BackColor;
+}
+System::Void MainForm::colorButton4_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton4->BackColor;
+	currentColor->BackColor = colorButton4->BackColor;
+}
+System::Void MainForm::colorButton5_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton5->BackColor;
+	currentColor->BackColor = colorButton5->BackColor;
+}
+System::Void MainForm::colorButton6_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton6->BackColor;
+	currentColor->BackColor = colorButton6->BackColor;
+}
+System::Void MainForm::colorButton7_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton7->BackColor;
+	currentColor->BackColor = colorButton7->BackColor;
+}
+System::Void MainForm::colorButton8_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton8->BackColor;
+	currentColor->BackColor = colorButton8->BackColor;
+}
+System::Void MainForm::colorButton9_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton9->BackColor;
+	currentColor->BackColor = colorButton9->BackColor;
+}
+System::Void MainForm::colorButton10_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton10->BackColor;
+	currentColor->BackColor = colorButton10->BackColor;
+}
+System::Void MainForm::colorButton11_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton11->BackColor;
+	currentColor->BackColor = colorButton11->BackColor;
+}
+System::Void MainForm::colorButton12_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton12->BackColor;
+	currentColor->BackColor = colorButton12->BackColor;
+}
+System::Void MainForm::colorButton13_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton13->BackColor;
+	currentColor->BackColor = colorButton13->BackColor;
+}
+System::Void MainForm::colorButton14_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton14->BackColor;
+	currentColor->BackColor = colorButton14->BackColor;
+}
+System::Void MainForm::colorButton15_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton15->BackColor;
+	currentColor->BackColor = colorButton15->BackColor;
+}
+System::Void MainForm::colorButton16_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton16->BackColor;
+	currentColor->BackColor = colorButton16->BackColor;
+}
+System::Void MainForm::colorButton17_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton17->BackColor;
+	currentColor->BackColor = colorButton17->BackColor;
+}
+System::Void MainForm::colorButton18_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton18->BackColor;
+	currentColor->BackColor = colorButton18->BackColor;
+}
+System::Void MainForm::colorButton19_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton19->BackColor;
+	currentColor->BackColor = colorButton19->BackColor;
+}
+System::Void MainForm::colorButton20_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton20->BackColor;
+	currentColor->BackColor = colorButton20->BackColor;
+}
+System::Void MainForm::colorButton21_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton21->BackColor;
+	currentColor->BackColor = colorButton21->BackColor;
+}
+System::Void MainForm::colorButton22_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton22->BackColor;
+	currentColor->BackColor = colorButton22->BackColor;
+}
+System::Void MainForm::colorButton23_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton23->BackColor;
+	currentColor->BackColor = colorButton23->BackColor;
+}
+System::Void MainForm::colorButton24_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton24->BackColor;
+	currentColor->BackColor = colorButton24->BackColor;
+}
+System::Void MainForm::colorButton25_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton25->BackColor;
+	currentColor->BackColor = colorButton25->BackColor;
+}
+System::Void MainForm::colorButton26_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton26->BackColor;
+	currentColor->BackColor = colorButton26->BackColor;
+}
+System::Void MainForm::colorButton27_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton27->BackColor;
+	currentColor->BackColor = colorButton27->BackColor;
+}
+System::Void MainForm::colorButton28_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton28->BackColor;
+	currentColor->BackColor = colorButton28->BackColor;
+}
+System::Void MainForm::colorButton29_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton29->BackColor;
+	currentColor->BackColor = colorButton29->BackColor;
+}
+System::Void MainForm::colorButton30_Click(System::Object^ sender, System::EventArgs^ e) {
+	brushColor = colorButton30->BackColor;
+	currentColor->BackColor = colorButton30->BackColor;
+}
+
+System::Void MainForm::editColor_Click(System::Object^ sender, System::EventArgs^ e)
+{
+
+	if (colorDialog->ShowDialog() == Windows::Forms::DialogResult::OK)
+	{
+		brushColor = colorDialog->Color;
+		currentColor->BackColor = colorDialog->Color;
+		if (colorButton21->Enabled == false)
+		{
+			colorButton21->Enabled = true;
+			colorButton21->BackColor = brushColor;
+			colorButton21->Focus();
+		}
+		else if (colorButton21->Enabled == false)
+		{
+			colorButton21->Enabled = true;
+			colorButton21->BackColor = brushColor;
+			colorButton21->Focus();
+		}
+		else if (colorButton22->Enabled == false)
+		{
+			colorButton22->Enabled = true;
+			colorButton22->BackColor = brushColor;
+			colorButton22->Focus();
+		}
+		else if (colorButton23->Enabled == false)
+		{
+			colorButton23->Enabled = true;
+			colorButton23->BackColor = brushColor;
+			colorButton23->Focus();
+		}
+		else if (colorButton24->Enabled == false)
+		{
+			colorButton24->Enabled = true;
+			colorButton24->BackColor = brushColor;
+			colorButton24->Focus();
+		}
+		else if (colorButton25->Enabled == false)
+		{
+			colorButton25->Enabled = true;
+			colorButton25->BackColor = brushColor;
+			colorButton25->Focus();
+		}
+		else if (colorButton26->Enabled == false)
+		{
+			colorButton26->Enabled = true;
+			colorButton26->BackColor = brushColor;
+			colorButton26->Focus();
+		}
+		else if (colorButton27->Enabled == false)
+		{
+			colorButton27->Enabled = true;
+			colorButton27->BackColor = brushColor;
+			colorButton27->Focus();
+		}
+		else if (colorButton28->Enabled == false)
+		{
+			colorButton28->Enabled = true;
+			colorButton28->BackColor = brushColor;
+			colorButton28->Focus();
+		}
+		else if (colorButton29->Enabled == false)
+		{
+			colorButton29->Enabled = true;
+			colorButton29->BackColor = brushColor;
+			colorButton29->Focus();
+		}
+		else if (colorButton30->Enabled == false)
+		{
+			colorButton30->Enabled = true;
+			colorButton30->BackColor = brushColor;
+			colorButton30->Focus();
+		}
+		else
+		{
+			colorButton21->BackColor = colorButton22->BackColor;
+			colorButton22->BackColor = colorButton23->BackColor;
+			colorButton23->BackColor = colorButton24->BackColor;
+			colorButton24->BackColor = colorButton25->BackColor;
+			colorButton25->BackColor = colorButton26->BackColor;
+			colorButton26->BackColor = colorButton27->BackColor;
+			colorButton27->BackColor = colorButton28->BackColor;
+			colorButton28->BackColor = colorButton29->BackColor;
+			colorButton29->BackColor = colorButton30->BackColor;
+			colorButton30->BackColor = brushColor;
+			colorButton30->Focus();
+		}
+	}
+}
+
 System::Void MainForm::MainForm_Shown(System::Object^ sender, System::EventArgs^ e)
 {
 	pen = gcnew Pen(brushColor, (float)brushWidth);
@@ -33,25 +244,11 @@ System::Void MainForm::MainForm_Shown(System::Object^ sender, System::EventArgs^
 	Canvas = Graphics::FromImage(bmp);
 	Canvas->Clear(Color::White);
 	pictureBox->Image = bmp;
-
-	//stack = gcnew PointStack();
-	//stack->push(Point(3, 3));
-	//stack->push(Point(2, 4));
-	//stack->push(Point(1, 5));
-	//brushWidthLabel->Text = std::to_string(brushWidthBar->Value);
+	history->push((Bitmap^)bmp->Clone());
 }
 
 System::Void MainForm::dateTimePicker1_ValueChanged(System::Object^ sender, System::EventArgs^ e) {}
 System::Void MainForm::domainUpDown1_SelectedItemChanged(System::Object^ sender, System::EventArgs^ e) {}
-
-System::Void MainForm::ColorButton1_Click(System::Object^ sender, System::EventArgs^ e)
-{
-	brushColor = ColorButton1->BackColor;
-}
-System::Void MainForm::ColorButton2_Click(System::Object^ sender, System::EventArgs^ e)
-{
-	brushColor = ColorButton2->BackColor;
-}
 
 System::Void MainForm::brushWidthBar_ValueChanged(System::Object^ sender, System::EventArgs^ e)
 {
@@ -85,10 +282,6 @@ System::Void MainForm::pictureBox_MouseDown(System::Object^ sender, System::Wind
 		case Tools::Spray:
 			break;
 		case Tools::Pipette:
-			brushColor = bmp->GetPixel(e->X, e->Y);
-			pen->Color = brushColor;
-			brush->Color = brushColor;
-			brushButton_Click(sender, e);
 			break;
 		case Tools::Eraser:
 			pen->Color = Color::White;
@@ -98,31 +291,50 @@ System::Void MainForm::pictureBox_MouseDown(System::Object^ sender, System::Wind
 			break;
 		case Tools::Fill:
 		{
-			
 			Color targetColor = bmp->GetPixel(e->X, e->Y);
-			if (!compareColors(targetColor, brushColor)) 
+			if (compareColors(brushColor, targetColor))
 			{
-				Generic::Stack<Point>^ pixels = gcnew Generic::Stack<Point>();
-				pixels->Push(Point(e->X, e->Y));
-				while (pixels->Count > 0)
-				{
-					Point a = pixels->Pop();
-					if (a.X < bmp->Width && a.X > 0 &&
-						a.Y < bmp->Height && a.Y > 0)//make sure we stay within bounds
-					{
-
-						if (bmp->GetPixel(a.X, a.Y) == targetColor)
-						{
-							bmp->SetPixel(a.X, a.Y, brushColor);
-							pixels->Push(Point(a.X - 1, a.Y));
-							pixels->Push(Point(a.X + 1, a.Y));
-							pixels->Push(Point(a.X, a.Y - 1));
-							pixels->Push(Point(a.X, a.Y + 1));
-						}
-					}
-				}
-				pictureBox->Refresh(); //refresh our main picture box
+				return;
 			}
+			Generic::Stack<Point>^ pixels = gcnew Generic::Stack<Point>();
+			pixels->Push(Point(startX, startY));
+			while (pixels->Count != 0)
+			{
+				Point temp = pixels->Pop();
+				int y1 = temp.Y;
+				while (y1 >= 0 && bmp->GetPixel(temp.X, y1) == targetColor)
+				{
+					y1--;
+				}
+				y1++;
+				bool spanLeft = false;
+				bool spanRight = false;
+				while (y1 < bmp->Height && bmp->GetPixel(temp.X, y1) == targetColor)
+				{
+					bmp->SetPixel(temp.X, y1, brushColor);
+					if (!spanLeft && temp.X > 0 && bmp->GetPixel(temp.X - 1, y1) == targetColor)
+					{
+						pixels->Push(Point(temp.X - 1, y1));
+						spanLeft = true;
+					}
+					else if (spanLeft && temp.X - 1 == 0 && bmp->GetPixel(temp.X - 1, y1) != targetColor)
+					{
+						spanLeft = false;
+					}
+					if (!spanRight && temp.X < bmp->Width - 1 && bmp->GetPixel(temp.X + 1, y1) == targetColor)
+					{
+						pixels->Push(Point(temp.X + 1, y1));
+						spanRight = true;
+					}
+					else if (spanRight && temp.X < bmp->Width - 1 && bmp->GetPixel(temp.X + 1, y1) != targetColor)
+					{
+						spanRight = false;
+					}
+					y1++;
+				}
+
+			}
+			pictureBox->Refresh();
 			break;
 		}
 		case Tools::Line:
@@ -148,6 +360,10 @@ System::Void MainForm::pictureBox_MouseUp(System::Object^ sender, System::Window
 	case Tools::Spray:
 		break;
 	case Tools::Pipette:
+		brushColor = bmp->GetPixel(e->X, e->Y);
+		currentColor->BackColor = brushColor;
+		currentTool = Tools::Brush;
+		brushButton->Focus();
 		break;
 	case Tools::Eraser:
 		break;
@@ -253,9 +469,12 @@ System::Void MainForm::pictureBox_MouseMove(System::Object^ sender, System::Wind
 
 System::Void MainForm::backToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	bmp = (Bitmap^)history->goBack()->Clone();
-	pictureBox->Image = (Bitmap^)bmp->Clone();
-	Canvas = Graphics::FromImage(bmp);
+	if (history->hasPrevious())
+	{
+		bmp = (Bitmap^)history->goBack()->Clone();
+		pictureBox->Image = (Bitmap^)bmp->Clone();
+		Canvas = Graphics::FromImage(bmp);
+	}
 }
 
 System::Void MainForm::brushButton_Click(System::Object^ sender, System::EventArgs^ e)

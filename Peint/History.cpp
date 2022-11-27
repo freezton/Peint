@@ -15,15 +15,26 @@ System::Void History::push(System::Drawing::Bitmap^ bmp)
 
 System::Boolean History::hasNext()
 {
+	if (current == history.size())
+		return false;
+	return true;
+}
+
+System::Boolean History::hasPrevious()
+{
+	if (current == 0)
+		return false;
 	return true;
 }
 
 System::Drawing::Bitmap^ History::goBack()
 {
-	return history[--current];
+	if (current != 0)
+		return history[--current];
 }
 
 System::Drawing::Bitmap^ History::goForward()
 {
-	return history[++current];
+	if (current != history.size()-1)
+		return history[++current];
 }

@@ -37,4 +37,6 @@ public:
 
 	System::Boolean hasNext();
 
+	System::Boolean hasPrevious();
+
 };
