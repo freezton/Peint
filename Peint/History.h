@@ -8,7 +8,6 @@ public ref class History
 {
 private:
 	int current;
-	int maxSize;
 	cliext::vector<System::Drawing::Bitmap^> history;
 
 protected:
@@ -21,12 +20,6 @@ public:
 	History()
 	{
 		this->current = 0;
-		this->maxSize = 50;
-	}
-	History(int maxSize)
-	{
-		this->current = 0;
-		this->maxSize = maxSize;
 	}
 
 	System::Void push(System::Drawing::Bitmap^ bmp);

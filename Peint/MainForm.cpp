@@ -3,7 +3,6 @@
 #include <iostream>
 #include <string>
 #include <time.h>
-#include <stack>
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -291,50 +290,8 @@ System::Void MainForm::pictureBox_MouseDown(System::Object^ sender, System::Wind
 			break;
 		case Tools::Fill:
 		{
-			Color targetColor = bmp->GetPixel(e->X, e->Y);
-			if (compareColors(brushColor, targetColor))
-			{
-				return;
-			}
-			Generic::Stack<Point>^ pixels = gcnew Generic::Stack<Point>();
-			pixels->Push(Point(startX, startY));
-			while (pixels->Count != 0)
-			{
-				Point temp = pixels->Pop();
-				int y1 = temp.Y;
-				while (y1 >= 0 && bmp->GetPixel(temp.X, y1) == targetColor)
-				{
-					y1--;
-				}
-				y1++;
-				bool spanLeft = false;
-				bool spanRight = false;
-				while (y1 < bmp->Height && bmp->GetPixel(temp.X, y1) == targetColor)
-				{
-					bmp->SetPixel(temp.X, y1, brushColor);
-					if (!spanLeft && temp.X > 0 && bmp->GetPixel(temp.X - 1, y1) == targetColor)
-					{
-						pixels->Push(Point(temp.X - 1, y1));
-						spanLeft = true;
-					}
-					else if (spanLeft && temp.X - 1 == 0 && bmp->GetPixel(temp.X - 1, y1) != targetColor)
-					{
-						spanLeft = false;
-					}
-					if (!spanRight && temp.X < bmp->Width - 1 && bmp->GetPixel(temp.X + 1, y1) == targetColor)
-					{
-						pixels->Push(Point(temp.X + 1, y1));
-						spanRight = true;
-					}
-					else if (spanRight && temp.X < bmp->Width - 1 && bmp->GetPixel(temp.X + 1, y1) != targetColor)
-					{
-						spanRight = false;
-					}
-					y1++;
-				}
-
-			}
-			pictureBox->Refresh();
+			Drawer::Drawer::Fill(bmp, brush->Color, Point(startX, startY));
+			pictureBox->Image = bmp;
 			break;
 		}
 		case Tools::Line:
@@ -344,6 +301,13 @@ System::Void MainForm::pictureBox_MouseDown(System::Object^ sender, System::Wind
 		case Tools::Ellipse:
 			break;
 		case Tools::Rectangle:
+			break;
+		case Tools::Selection:
+			if (draggedFragment != nullptr && !draggedFragment->getRect().Contains(e->Location))
+			{
+				draggedFragment = nullptr;
+				pictureBox->Invalidate();
+			}
 			break;
 		default:
 			break;
@@ -393,6 +357,25 @@ System::Void MainForm::pictureBox_MouseUp(System::Object^ sender, System::Window
 			pictureBox->Image = bmp;
 		}
 		break;
+	case Tools::Selection:
+		if (mousePos1 != mousePos2)
+		{
+			draggedFragment = gcnew DraggedFragment();
+			draggedFragment->SourceRect = rect;
+			draggedFragment->Location = rect.Location;
+		}
+		else
+		{
+			if (draggedFragment != nullptr)
+			{
+				draggedFragment->fix(pictureBox->Image);
+				draggedFragment = nullptr;
+				mousePos1 = e->Location;
+				mousePos2 = e->Location;
+			}
+		}
+		pictureBox->Invalidate();
+		break;
 	default:
 		break;
 	}
@@ -403,7 +386,6 @@ System::Void MainForm::pictureBox_MouseMove(System::Object^ sender, System::Wind
 {
 	if (e->Button == System::Windows::Forms::MouseButtons::Left)
 	{
-		Drawing::Rectangle rect;
 		rect.X = Math::Min(e->X, startX);
 		rect.Y = Math::Min(e->Y, startY);
 		rect.Width = Math::Abs(startX - e->X);
@@ -461,9 +443,60 @@ System::Void MainForm::pictureBox_MouseMove(System::Object^ sender, System::Wind
 			pictureBox->Image = tempBMP;
 			break;
 		}
+		case Tools::Selection:
+		{
+			//ControlPaint^ c;
+			//tempBMP = (Bitmap^)bmp->Clone();
+			//tempCanvas = Graphics::FromImage(tempBMP);
+			//c->DrawFocusRectangle(tempCanvas, rect);
+			//pictureBox->Image = tempBMP;
+			if (draggedFragment != nullptr)
+			{
+				draggedFragment->Location.Offset(e->Location.X - mousePos2.X, e->Location.Y - mousePos2.Y);
+				mousePos1 = e->Location;
+			}
+			mousePos2 = e->Location;
+			pictureBox->Invalidate();
+			break;
+		}
 		default:
 			break;
 		}
+	}
+	else
+	{
+		mousePos1 = e->Location;
+		mousePos2 = e->Location;
+	}
+}
+
+Rectangle getRect(Point p1, Point p2)
+{
+	int x1 = Math::Min(p1.X, p2.X);
+	int x2 = Math::Max(p1.X, p2.X);
+	int y1 = Math::Min(p1.Y, p2.Y);
+	int y2 = Math::Max(p1.Y, p2.Y);
+	return Rectangle(x1, y1, x2 - x1, y2 - y1);
+}
+
+System::Void MainForm::pictureBox_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
+{
+	ControlPaint^ c;
+	if (draggedFragment != nullptr)
+	{
+		e->Graphics->SetClip(draggedFragment->SourceRect);
+		e->Graphics->Clear(Color::White);
+
+		e->Graphics->SetClip(draggedFragment->getRect());
+		e->Graphics->DrawImage(pictureBox->Image, draggedFragment->Location.X - draggedFragment->SourceRect.X, draggedFragment->Location.Y - draggedFragment->SourceRect.Y);
+
+		e->Graphics->ResetClip();
+		c->DrawFocusRectangle(e->Graphics, draggedFragment->getRect());
+	}
+	else
+	{
+		if (mousePos1 != mousePos2)
+			c->DrawFocusRectangle(e->Graphics, getRect(mousePos1, mousePos2));
 	}
 }
 
@@ -472,6 +505,16 @@ System::Void MainForm::backToolStripMenuItem_Click(System::Object^ sender, Syste
 	if (history->hasPrevious())
 	{
 		bmp = (Bitmap^)history->goBack()->Clone();
+		pictureBox->Image = (Bitmap^)bmp->Clone();
+		Canvas = Graphics::FromImage(bmp);
+	}
+}
+
+System::Void MainForm::aheadToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	if (history->hasNext())
+	{
+		bmp = (Bitmap^)history->goForward()->Clone();
 		pictureBox->Image = (Bitmap^)bmp->Clone();
 		Canvas = Graphics::FromImage(bmp);
 	}
@@ -510,4 +553,10 @@ System::Void MainForm::eraserButton_Click(System::Object^ sender, System::EventA
 System::Void MainForm::pipetteButton_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	currentTool = Tools::Pipette;
+}
+
+System::Void MainForm::button2_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	draggedFragment = nullptr;
+	pictureBox->Invalidate();
 }

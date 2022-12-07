@@ -8,14 +8,18 @@ System::Void History::push(System::Drawing::Bitmap^ bmp)
 	}
 	else
 	{
+		if (current != history.size() - 1)
+		{
+			history.erase(history.begin() + current + 1, history.begin() + history.size());
+		}
 		history.push_back(bmp);
-		current++;
 	}
+	current = history.size() - 1;
 }
 
 System::Boolean History::hasNext()
 {
-	if (current == history.size())
+	if (current == history.size() - 1)
 		return false;
 	return true;
 }
@@ -38,3 +42,4 @@ System::Drawing::Bitmap^ History::goForward()
 	if (current != history.size()-1)
 		return history[++current];
 }
+
