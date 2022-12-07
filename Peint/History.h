@@ -1,7 +1,7 @@
 #include <cliext/vector>
 
-//using namespace System;
-//using namespace System::Drawing;
+using namespace System;
+using namespace System::Drawing;
 
 #pragma once
 public ref class History
@@ -22,14 +22,14 @@ public:
 		this->current = 0;
 	}
 
-	System::Void push(System::Drawing::Bitmap^ bmp);
+	Void push(System::Drawing::Bitmap^ bmp);
 
-	System::Drawing::Bitmap^ goBack();
+	Bitmap^ goBack();
 
-	System::Drawing::Bitmap^ goForward();
+	Bitmap^ goForward();
 
-	System::Boolean hasNext();
+	Boolean hasNext();
 
-	System::Boolean hasPrevious();
+	Boolean hasPrevious();
 
 };

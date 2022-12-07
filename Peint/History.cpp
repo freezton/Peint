@@ -1,6 +1,9 @@
 #include "History.h"
 
-System::Void History::push(System::Drawing::Bitmap^ bmp)
+using namespace System;
+using namespace System::Drawing;
+
+Void History::push(System::Drawing::Bitmap^ bmp)
 {
 	if (history.size() == 0)
 	{
@@ -17,29 +20,29 @@ System::Void History::push(System::Drawing::Bitmap^ bmp)
 	current = history.size() - 1;
 }
 
-System::Boolean History::hasNext()
+Boolean History::hasNext()
 {
 	if (current == history.size() - 1)
 		return false;
 	return true;
 }
 
-System::Boolean History::hasPrevious()
+Boolean History::hasPrevious()
 {
 	if (current == 0)
 		return false;
 	return true;
 }
 
-System::Drawing::Bitmap^ History::goBack()
+Bitmap^ History::goBack()
 {
 	if (current != 0)
 		return history[--current];
 }
 
-System::Drawing::Bitmap^ History::goForward()
+Bitmap^ History::goForward()
 {
-	if (current != history.size()-1)
+	if (current != history.size() - 1)
 		return history[++current];
 }
 
