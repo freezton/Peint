@@ -9,6 +9,7 @@ using namespace System::Windows::Forms;
 using namespace System::Collections::Generic;
 using namespace Peint;
 
+[STAThreadAttribute]
 void main()
 {
 	Application::EnableVisualStyles();
@@ -240,6 +241,8 @@ System::Void MainForm::MainForm_Shown(System::Object^ sender, System::EventArgs^
 	brush = gcnew SolidBrush(Color::Black);
 	bmp = gcnew Bitmap(pictureBox->Width, pictureBox->Height);
 	history = gcnew History();
+	file = gcnew FileManager();
+
 	Canvas = Graphics::FromImage(bmp);
 	Canvas->Clear(Color::White);
 	pictureBox->Image = bmp;
@@ -518,6 +521,27 @@ System::Void MainForm::aheadToolStripMenuItem_Click(System::Object^ sender, Syst
 		pictureBox->Image = (Bitmap^)bmp->Clone();
 		Canvas = Graphics::FromImage(bmp);
 	}
+}
+
+System::Void MainForm::newToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+
+}
+
+System::Void MainForm::openToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+
+}
+
+System::Void MainForm::saveToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	file->save(pictureBox->Image);
+}
+
+System::Void MainForm::saveAsToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	file->save(pictureBox->Image);
+	MainForm::Name = file->getFileName() + " - Peint";
 }
 
 System::Void MainForm::brushButton_Click(System::Object^ sender, System::EventArgs^ e)

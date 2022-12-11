@@ -1,6 +1,6 @@
 #include "History.h"
 #include "Selection.h"
-//#include "Stack.h"
+#include "FileManager.h"
 
 #pragma once
 
@@ -49,10 +49,10 @@ namespace Peint {
 		List <Point>^ points;
 		History^ history;
 		Rectangle rect;
-		//Rectangle draggedFragment = Rectangle(0,0,0,0);
 		Point mousePos1;
 		Point mousePos2;
 		DraggedFragment^ draggedFragment;
+		FileManager^ file;
 
 		int startX;
 		int startY;
@@ -261,8 +261,8 @@ private: System::Windows::Forms::Button^ button2;
 			this->Colors = (gcnew System::Windows::Forms::Label());
 			this->colorDialog = (gcnew System::Windows::Forms::ColorDialog());
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
-			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->button2 = (gcnew System::Windows::Forms::Button());
+			this->label3 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox))->BeginInit();
 			this->menuStrip->SuspendLayout();
 			this->pictureBoxPanel->SuspendLayout();
@@ -279,7 +279,7 @@ private: System::Windows::Forms::Button^ button2;
 			this->pictureBox->BackColor = System::Drawing::SystemColors::Window;
 			this->pictureBox->Location = System::Drawing::Point(-2, -1);
 			this->pictureBox->Name = L"pictureBox";
-			this->pictureBox->Size = System::Drawing::Size(1326, 557);
+			this->pictureBox->Size = System::Drawing::Size(1326, 597);
 			this->pictureBox->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox->TabIndex = 0;
 			this->pictureBox->TabStop = false;
@@ -301,31 +301,41 @@ private: System::Windows::Forms::Button^ button2;
 			// newToolStripMenuItem
 			// 
 			this->newToolStripMenuItem->Name = L"newToolStripMenuItem";
-			this->newToolStripMenuItem->Size = System::Drawing::Size(112, 22);
+			this->newToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::N));
+			this->newToolStripMenuItem->Size = System::Drawing::Size(184, 22);
 			this->newToolStripMenuItem->Text = L"New";
+			this->newToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::newToolStripMenuItem_Click);
 			// 
 			// openToolStripMenuItem
 			// 
 			this->openToolStripMenuItem->Name = L"openToolStripMenuItem";
-			this->openToolStripMenuItem->Size = System::Drawing::Size(112, 22);
+			this->openToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::O));
+			this->openToolStripMenuItem->Size = System::Drawing::Size(184, 22);
 			this->openToolStripMenuItem->Text = L"Open";
+			this->openToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::openToolStripMenuItem_Click);
 			// 
 			// saveToolStripMenuItem
 			// 
 			this->saveToolStripMenuItem->Name = L"saveToolStripMenuItem";
-			this->saveToolStripMenuItem->Size = System::Drawing::Size(112, 22);
+			this->saveToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::S));
+			this->saveToolStripMenuItem->Size = System::Drawing::Size(184, 22);
 			this->saveToolStripMenuItem->Text = L"Save";
+			this->saveToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::saveToolStripMenuItem_Click);
 			// 
 			// saveAsToolStripMenuItem
 			// 
 			this->saveAsToolStripMenuItem->Name = L"saveAsToolStripMenuItem";
-			this->saveAsToolStripMenuItem->Size = System::Drawing::Size(112, 22);
+			this->saveAsToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>(((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::Shift)
+				| System::Windows::Forms::Keys::S));
+			this->saveAsToolStripMenuItem->Size = System::Drawing::Size(184, 22);
 			this->saveAsToolStripMenuItem->Text = L"Save as";
+			this->saveAsToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::saveAsToolStripMenuItem_Click);
 			// 
 			// aboutToolStripMenuItem
 			// 
 			this->aboutToolStripMenuItem->Name = L"aboutToolStripMenuItem";
-			this->aboutToolStripMenuItem->Size = System::Drawing::Size(112, 22);
+			this->aboutToolStripMenuItem->ShortcutKeys = System::Windows::Forms::Keys::F1;
+			this->aboutToolStripMenuItem->Size = System::Drawing::Size(184, 22);
 			this->aboutToolStripMenuItem->Text = L"About";
 			// 
 			// menuStrip
@@ -376,7 +386,7 @@ private: System::Windows::Forms::Button^ button2;
 			this->pictureBoxPanel->Controls->Add(this->pictureBox);
 			this->pictureBoxPanel->Location = System::Drawing::Point(53, 129);
 			this->pictureBoxPanel->Name = L"pictureBoxPanel";
-			this->pictureBoxPanel->Size = System::Drawing::Size(1327, 558);
+			this->pictureBoxPanel->Size = System::Drawing::Size(1327, 598);
 			this->pictureBoxPanel->TabIndex = 6;
 			// 
 			// brushWidthBar
@@ -494,7 +504,7 @@ private: System::Windows::Forms::Button^ button2;
 			this->panel2->Dock = System::Windows::Forms::DockStyle::Left;
 			this->panel2->Location = System::Drawing::Point(0, 24);
 			this->panel2->Name = L"panel2";
-			this->panel2->Size = System::Drawing::Size(48, 667);
+			this->panel2->Size = System::Drawing::Size(48, 708);
 			this->panel2->TabIndex = 15;
 			// 
 			// selectionButton
@@ -533,7 +543,7 @@ private: System::Windows::Forms::Button^ button2;
 			// 
 			this->Size->AutoSize = true;
 			this->Size->ForeColor = System::Drawing::SystemColors::ControlDarkDark;
-			this->Size->Location = System::Drawing::Point(82, 78);
+			this->Size->Location = System::Drawing::Point(82, 79);
 			this->Size->Name = L"Size";
 			this->Size->Size = System::Drawing::Size(27, 13);
 			this->Size->TabIndex = 39;
@@ -959,7 +969,7 @@ private: System::Windows::Forms::Button^ button2;
 			// 
 			this->Colors->AutoSize = true;
 			this->Colors->ForeColor = System::Drawing::SystemColors::ControlDarkDark;
-			this->Colors->Location = System::Drawing::Point(163, 79);
+			this->Colors->Location = System::Drawing::Point(163, 80);
 			this->Colors->Name = L"Colors";
 			this->Colors->Size = System::Drawing::Size(36, 13);
 			this->Colors->TabIndex = 8;
@@ -975,16 +985,6 @@ private: System::Windows::Forms::Button^ button2;
 			this->panel1->Size = System::Drawing::Size(747, 94);
 			this->panel1->TabIndex = 1;
 			// 
-			// label3
-			// 
-			this->label3->AutoSize = true;
-			this->label3->ForeColor = System::Drawing::SystemColors::ControlDarkDark;
-			this->label3->Location = System::Drawing::Point(337, 78);
-			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(54, 13);
-			this->label3->TabIndex = 40;
-			this->label3->Text = L"Properties";
-			// 
 			// button2
 			// 
 			this->button2->Location = System::Drawing::Point(43, 17);
@@ -995,13 +995,23 @@ private: System::Windows::Forms::Button^ button2;
 			this->button2->UseVisualStyleBackColor = true;
 			this->button2->Click += gcnew System::EventHandler(this, &MainForm::button2_Click);
 			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->ForeColor = System::Drawing::SystemColors::ControlDarkDark;
+			this->label3->Location = System::Drawing::Point(337, 79);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(54, 13);
+			this->label3->TabIndex = 40;
+			this->label3->Text = L"Properties";
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
 			this->BackColor = System::Drawing::SystemColors::ActiveBorder;
-			this->ClientSize = System::Drawing::Size(1386, 691);
+			this->ClientSize = System::Drawing::Size(1386, 732);
 			this->Controls->Add(this->panel1);
 			this->Controls->Add(this->panel4);
 			this->Controls->Add(this->panel3);
@@ -1086,5 +1096,9 @@ private: System::Void selectionButton_Click(System::Object^ sender, System::Even
 }
 private: System::Void pictureBox_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e);
 private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e);
+private: System::Void newToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+private: System::Void openToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+private: System::Void saveToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+private: System::Void saveAsToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }
