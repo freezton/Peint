@@ -115,7 +115,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Reference Include="Drawer">
-      <HintPath>D:\Uni\2 year\kpo\Peint\x64\Debug\Drawer.dll</HintPath>
+      <HintPath>..\Drawer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

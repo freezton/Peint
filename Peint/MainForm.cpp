@@ -243,10 +243,12 @@ System::Void MainForm::MainForm_Shown(System::Object^ sender, System::EventArgs^
 	history = gcnew History();
 	file = gcnew FileManager();
 
+	MainForm::Text = file->getFileName() + " - Peint";
 	Canvas = Graphics::FromImage(bmp);
 	Canvas->Clear(Color::White);
 	pictureBox->Image = bmp;
 	history->push((Bitmap^)bmp->Clone());
+	brushButton->Focus();
 }
 
 System::Void MainForm::dateTimePicker1_ValueChanged(System::Object^ sender, System::EventArgs^ e) {}
@@ -528,9 +530,35 @@ System::Void MainForm::newToolStripMenuItem_Click(System::Object^ sender, System
 
 }
 
+System::Void MainForm::openFile() {
+	if (file->open()) {
+		MainForm::Text = file->getFileName() + " - Peint";
+		bmp = file->getBmp();
+		pictureBox->Width = bmp->Width;
+		pictureBox->Height = bmp->Height;
+		pictureBox->Image = bmp;
+		Canvas = Graphics::FromImage(bmp);
+		Canvas->FillPie(gcnew SolidBrush(bmp->GetPixel(1, 1)), 1, 1, 1, 1, 0, 360);
+		history = gcnew History();
+		history->push((Bitmap^)bmp->Clone());
+	}
+}
+
 System::Void MainForm::openToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
-
+	Windows::Forms::DialogResult result;
+	if (file->isNeedSave()) {
+		result = Windows::Forms::MessageBox::Show(L"Вы хотите сохранить изменения в файле " + file->getFileName() + L"?", L"Открытие", MessageBoxButtons::YesNoCancel);
+		if (result == Windows::Forms::DialogResult::Yes) {
+			if (file->save(pictureBox->Image)) {
+				openFile();
+			}
+		}
+	}
+	if (result == Windows::Forms::DialogResult::No || !file->isNeedSave()) {
+		openFile();
+	}
+	
 }
 
 System::Void MainForm::saveToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
@@ -540,8 +568,8 @@ System::Void MainForm::saveToolStripMenuItem_Click(System::Object^ sender, Syste
 
 System::Void MainForm::saveAsToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	file->save(pictureBox->Image);
-	MainForm::Name = file->getFileName() + " - Peint";
+	file->saveAs(pictureBox->Image);
+	MainForm::Text = file->getFileName() + " - Peint";
 }
 
 System::Void MainForm::brushButton_Click(System::Object^ sender, System::EventArgs^ e)

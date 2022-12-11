@@ -1018,6 +1018,7 @@ private: System::Windows::Forms::Button^ button2;
 			this->Controls->Add(this->panel2);
 			this->Controls->Add(this->pictureBoxPanel);
 			this->Controls->Add(this->menuStrip);
+			this->DoubleBuffered = true;
 			this->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->MaximizeBox = false;
@@ -1100,5 +1101,8 @@ private: System::Void newToolStripMenuItem_Click(System::Object^ sender, System:
 private: System::Void openToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 private: System::Void saveToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 private: System::Void saveAsToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+private: System::Void openFile();
+private: System::Void MainForm_SizeChanged(System::Object^ sender, System::EventArgs^ e) {
+}
 };
 }

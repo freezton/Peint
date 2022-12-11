@@ -49,7 +49,7 @@ bool FileManager::saveAs(Image^ img) {
 			return true;
 		}
 		catch (...) {
-			MessageBox::Show(L"Нет доступа к файлу \"" + saveFileDialog->FileName + L"\"", L"Сохранение", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			MessageBox::Show(L"No access to file \"" + saveFileDialog->FileName + L"\"", L"Save", MessageBoxButtons::OK, MessageBoxIcon::Warning);
 		}
 	}
 	return false;
@@ -76,7 +76,7 @@ bool FileManager::save(Image^ img) {
 			return true;
 		}
 		catch (...) {
-			MessageBox::Show(L"Нет доступа к файлу \"" + filePath + L"\"", L"Сохранение", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			MessageBox::Show(L"No access to file \"" + filePath + L"\"", L"Save", MessageBoxButtons::OK, MessageBoxIcon::Warning);
 		}
 	}
 	else {
@@ -102,13 +102,13 @@ bool FileManager::open() {
 				return true;
 			}
 			else {
-				MessageBox::Show(L"" + openFileDialog->FileName + L"\nНе удается открыть файл. \nРисунок слишком большой. \nМаксимальный формат 2000 на 2000 точек.", L"Открытие", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+				MessageBox::Show(L"" + openFileDialog->FileName + L"\nCan't open file. \Picture is too big. \nMaximum size is 2000x2000.", L"Open", MessageBoxButtons::OK, MessageBoxIcon::Warning);
 				return false;
 			}
 		}
 		catch (...) {
 			fileStream->Close();
-			MessageBox::Show(L"" + openFileDialog->FileName + L"\nНе удается прочитать файл. \nФайл не является правильным точечным рисунком (BMP), или этот формат не поддерживается.", L"Открытие", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			MessageBox::Show(L"" + openFileDialog->FileName + L"\nCan't read file. \nFile is not a valid bitmap (BMP), or this format is not supported.", L"Открытие", MessageBoxButtons::OK, MessageBoxIcon::Warning);
 			return false;
 		}
 	}

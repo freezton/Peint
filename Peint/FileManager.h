@@ -14,7 +14,7 @@ public ref class FileManager {
 public: FileManager() {
 	needSave = false;
 	isOpen = false;
-	fileName = L"Безымянный.png";
+	fileName = L"Untitled.png";
 	filePath = L"";
 	saveFileDialog = gcnew SaveFileDialog();
 	openFileDialog = gcnew OpenFileDialog();
@@ -24,7 +24,7 @@ public: FileManager() {
 public: FileManager(int width, int height) {
 	needSave = false;
 	isOpen = false;
-	fileName = L"Безымянный.png";
+	fileName = L"Untitled.png";
 	filePath = L"";
 	saveFileDialog = gcnew SaveFileDialog();
 	openFileDialog = gcnew OpenFileDialog();
