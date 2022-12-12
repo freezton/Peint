@@ -57,6 +57,7 @@ namespace Peint {
 		int startX;
 		int startY;
 		int brushWidth = 10;
+		bool needCut = false;
 
 		enum class Tools {
 			Pointer,
@@ -173,7 +174,11 @@ private: System::Windows::Forms::ToolStripMenuItem^ aboutToolStripMenuItem;
 private: System::Windows::Forms::Panel^ panel1;
 private: System::Windows::Forms::Label^ label3;
 private: System::Windows::Forms::Button^ selectionButton;
-private: System::Windows::Forms::Button^ button2;
+private: System::Windows::Forms::Button^ deselectButton;
+
+private: System::Windows::Forms::Panel^ panel5;
+private: System::Windows::Forms::Button^ cutButton;
+private: System::Windows::Forms::Label^ label4;
 
 
 
@@ -220,8 +225,8 @@ private: System::Windows::Forms::Button^ button2;
 			this->eraserButton = (gcnew System::Windows::Forms::Button());
 			this->pipetteButton = (gcnew System::Windows::Forms::Button());
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
-			this->selectionButton = (gcnew System::Windows::Forms::Button());
 			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->selectionButton = (gcnew System::Windows::Forms::Button());
 			this->panel3 = (gcnew System::Windows::Forms::Panel());
 			this->Size = (gcnew System::Windows::Forms::Label());
 			this->panel4 = (gcnew System::Windows::Forms::Panel());
@@ -261,8 +266,11 @@ private: System::Windows::Forms::Button^ button2;
 			this->Colors = (gcnew System::Windows::Forms::Label());
 			this->colorDialog = (gcnew System::Windows::Forms::ColorDialog());
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
-			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->deselectButton = (gcnew System::Windows::Forms::Button());
+			this->panel5 = (gcnew System::Windows::Forms::Panel());
+			this->cutButton = (gcnew System::Windows::Forms::Button());
+			this->label4 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox))->BeginInit();
 			this->menuStrip->SuspendLayout();
 			this->pictureBoxPanel->SuspendLayout();
@@ -272,12 +280,15 @@ private: System::Windows::Forms::Button^ button2;
 			this->panel3->SuspendLayout();
 			this->panel4->SuspendLayout();
 			this->panel1->SuspendLayout();
+			this->panel5->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// pictureBox
 			// 
 			this->pictureBox->BackColor = System::Drawing::SystemColors::Window;
-			this->pictureBox->Location = System::Drawing::Point(-2, -1);
+			this->pictureBox->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox.BackgroundImage")));
+			this->pictureBox->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
+			this->pictureBox->Location = System::Drawing::Point(-1, -1);
 			this->pictureBox->Name = L"pictureBox";
 			this->pictureBox->Size = System::Drawing::Size(1326, 597);
 			this->pictureBox->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
@@ -491,8 +502,8 @@ private: System::Windows::Forms::Button^ button2;
 			// panel2
 			// 
 			this->panel2->BackColor = System::Drawing::SystemColors::ControlLight;
+			this->panel2->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"panel2.BackgroundImage")));
 			this->panel2->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
-			this->panel2->Controls->Add(this->selectionButton);
 			this->panel2->Controls->Add(this->button1);
 			this->panel2->Controls->Add(this->brushButton);
 			this->panel2->Controls->Add(this->pipetteButton);
@@ -507,17 +518,6 @@ private: System::Windows::Forms::Button^ button2;
 			this->panel2->Size = System::Drawing::Size(48, 708);
 			this->panel2->TabIndex = 15;
 			// 
-			// selectionButton
-			// 
-			this->selectionButton->BackColor = System::Drawing::Color::Transparent;
-			this->selectionButton->Location = System::Drawing::Point(4, 363);
-			this->selectionButton->Name = L"selectionButton";
-			this->selectionButton->Size = System::Drawing::Size(40, 38);
-			this->selectionButton->TabIndex = 16;
-			this->selectionButton->Text = L"sel";
-			this->selectionButton->UseVisualStyleBackColor = false;
-			this->selectionButton->Click += gcnew System::EventHandler(this, &MainForm::selectionButton_Click);
-			// 
 			// button1
 			// 
 			this->button1->BackColor = System::Drawing::Color::Transparent;
@@ -527,6 +527,18 @@ private: System::Windows::Forms::Button^ button2;
 			this->button1->TabIndex = 15;
 			this->button1->Text = L"spray";
 			this->button1->UseVisualStyleBackColor = false;
+			// 
+			// selectionButton
+			// 
+			this->selectionButton->BackColor = System::Drawing::SystemColors::ControlLight;
+			this->selectionButton->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"selectionButton.BackgroundImage")));
+			this->selectionButton->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+			this->selectionButton->Location = System::Drawing::Point(10, 9);
+			this->selectionButton->Name = L"selectionButton";
+			this->selectionButton->Size = System::Drawing::Size(60, 60);
+			this->selectionButton->TabIndex = 16;
+			this->selectionButton->UseVisualStyleBackColor = false;
+			this->selectionButton->Click += gcnew System::EventHandler(this, &MainForm::selectionButton_Click);
 			// 
 			// panel3
 			// 
@@ -978,22 +990,11 @@ private: System::Windows::Forms::Button^ button2;
 			// panel1
 			// 
 			this->panel1->BackColor = System::Drawing::SystemColors::ControlLight;
-			this->panel1->Controls->Add(this->button2);
 			this->panel1->Controls->Add(this->label3);
-			this->panel1->Location = System::Drawing::Point(633, 30);
+			this->panel1->Location = System::Drawing::Point(813, 30);
 			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(747, 94);
+			this->panel1->Size = System::Drawing::Size(567, 94);
 			this->panel1->TabIndex = 1;
-			// 
-			// button2
-			// 
-			this->button2->Location = System::Drawing::Point(43, 17);
-			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(41, 45);
-			this->button2->TabIndex = 17;
-			this->button2->Text = L"button2";
-			this->button2->UseVisualStyleBackColor = true;
-			this->button2->Click += gcnew System::EventHandler(this, &MainForm::button2_Click);
 			// 
 			// label3
 			// 
@@ -1005,6 +1006,50 @@ private: System::Windows::Forms::Button^ button2;
 			this->label3->TabIndex = 40;
 			this->label3->Text = L"Properties";
 			// 
+			// deselectButton
+			// 
+			this->deselectButton->Enabled = false;
+			this->deselectButton->Location = System::Drawing::Point(73, 9);
+			this->deselectButton->Name = L"deselectButton";
+			this->deselectButton->Size = System::Drawing::Size(92, 28);
+			this->deselectButton->TabIndex = 17;
+			this->deselectButton->Text = L"Deselect";
+			this->deselectButton->UseVisualStyleBackColor = true;
+			this->deselectButton->Click += gcnew System::EventHandler(this, &MainForm::button2_Click);
+			// 
+			// panel5
+			// 
+			this->panel5->BackColor = System::Drawing::SystemColors::ControlLight;
+			this->panel5->Controls->Add(this->label4);
+			this->panel5->Controls->Add(this->cutButton);
+			this->panel5->Controls->Add(this->deselectButton);
+			this->panel5->Controls->Add(this->selectionButton);
+			this->panel5->Location = System::Drawing::Point(633, 30);
+			this->panel5->Name = L"panel5";
+			this->panel5->Size = System::Drawing::Size(174, 94);
+			this->panel5->TabIndex = 41;
+			// 
+			// cutButton
+			// 
+			this->cutButton->Enabled = false;
+			this->cutButton->Location = System::Drawing::Point(73, 41);
+			this->cutButton->Name = L"cutButton";
+			this->cutButton->Size = System::Drawing::Size(92, 28);
+			this->cutButton->TabIndex = 18;
+			this->cutButton->Text = L"Cut";
+			this->cutButton->UseVisualStyleBackColor = true;
+			this->cutButton->Click += gcnew System::EventHandler(this, &MainForm::cutButton_Click);
+			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->ForeColor = System::Drawing::SystemColors::ControlDarkDark;
+			this->label4->Location = System::Drawing::Point(60, 79);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(51, 13);
+			this->label4->TabIndex = 41;
+			this->label4->Text = L"Selection";
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -1012,6 +1057,7 @@ private: System::Windows::Forms::Button^ button2;
 			this->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
 			this->BackColor = System::Drawing::SystemColors::ActiveBorder;
 			this->ClientSize = System::Drawing::Size(1386, 732);
+			this->Controls->Add(this->panel5);
 			this->Controls->Add(this->panel1);
 			this->Controls->Add(this->panel4);
 			this->Controls->Add(this->panel3);
@@ -1039,6 +1085,8 @@ private: System::Windows::Forms::Button^ button2;
 			this->panel4->PerformLayout();
 			this->panel1->ResumeLayout(false);
 			this->panel1->PerformLayout();
+			this->panel5->ResumeLayout(false);
+			this->panel5->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -1104,5 +1152,6 @@ private: System::Void saveAsToolStripMenuItem_Click(System::Object^ sender, Syst
 private: System::Void openFile();
 private: System::Void MainForm_SizeChanged(System::Object^ sender, System::EventArgs^ e) {
 }
+private: System::Void cutButton_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }

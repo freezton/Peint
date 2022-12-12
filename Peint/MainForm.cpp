@@ -312,6 +312,8 @@ System::Void MainForm::pictureBox_MouseDown(System::Object^ sender, System::Wind
 			{
 				draggedFragment = nullptr;
 				pictureBox->Invalidate();
+				deselectButton->Enabled = false;
+				cutButton->Enabled = false;
 			}
 			break;
 		default:
@@ -368,6 +370,8 @@ System::Void MainForm::pictureBox_MouseUp(System::Object^ sender, System::Window
 			draggedFragment = gcnew DraggedFragment();
 			draggedFragment->SourceRect = rect;
 			draggedFragment->Location = rect.Location;
+			deselectButton->Enabled = true;
+			cutButton->Enabled = true;
 		}
 		else
 		{
@@ -377,6 +381,8 @@ System::Void MainForm::pictureBox_MouseUp(System::Object^ sender, System::Window
 				draggedFragment = nullptr;
 				mousePos1 = e->Location;
 				mousePos2 = e->Location;
+				deselectButton->Enabled = false;
+				cutButton->Enabled = false;
 			}
 		}
 		pictureBox->Invalidate();
@@ -611,4 +617,15 @@ System::Void MainForm::button2_Click(System::Object^ sender, System::EventArgs^ 
 {
 	draggedFragment = nullptr;
 	pictureBox->Invalidate();
+	deselectButton->Enabled = false;
+	cutButton->Enabled = false;
+}
+
+System::Void MainForm::cutButton_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	Canvas->FillRectangle(gcnew SolidBrush(Color::White), draggedFragment->SourceRect);
+	pictureBox->Image = bmp;
+	draggedFragment = nullptr;
+	deselectButton->Enabled = false;
+	cutButton->Enabled = false;
 }
