@@ -57,6 +57,7 @@ namespace Peint {
 		int startX;
 		int startY;
 		int brushWidth = 10;
+		bool needFill = false;
 		bool needCut = false;
 
 		enum class Tools {
@@ -97,7 +98,8 @@ namespace Peint {
 	private: System::Windows::Forms::Button^ eraserButton;
 	private: System::Windows::Forms::Button^ pipetteButton;
 	private: System::Windows::Forms::Panel^ panel2;
-	private: System::Windows::Forms::Button^ button1;
+	private: System::Windows::Forms::Button^ sprayButton;
+
 	private: System::Windows::Forms::Panel^ panel3;
 	private: System::Windows::Forms::Panel^ panel4;
 	private: System::Windows::Forms::Label^ Colors;
@@ -179,6 +181,10 @@ private: System::Windows::Forms::Button^ deselectButton;
 private: System::Windows::Forms::Panel^ panel5;
 private: System::Windows::Forms::Button^ cutButton;
 private: System::Windows::Forms::Label^ label4;
+private: System::Windows::Forms::RadioButton^ withoutFillButton;
+private: System::Windows::Forms::RadioButton^ withFillButton;
+private: System::Windows::Forms::Timer^ sprayTimer;
+private: System::ComponentModel::IContainer^ components;
 
 
 
@@ -193,7 +199,7 @@ private: System::Windows::Forms::Label^ label4;
 		/// <summary>
 		/// Обязательная переменная конструктора.
 		/// </summary>
-		System::ComponentModel::Container^ components;
+
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -202,6 +208,7 @@ private: System::Windows::Forms::Label^ label4;
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MainForm::typeid));
 			this->pictureBox = (gcnew System::Windows::Forms::PictureBox());
 			this->fileToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -225,7 +232,7 @@ private: System::Windows::Forms::Label^ label4;
 			this->eraserButton = (gcnew System::Windows::Forms::Button());
 			this->pipetteButton = (gcnew System::Windows::Forms::Button());
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
-			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->sprayButton = (gcnew System::Windows::Forms::Button());
 			this->selectionButton = (gcnew System::Windows::Forms::Button());
 			this->panel3 = (gcnew System::Windows::Forms::Panel());
 			this->Size = (gcnew System::Windows::Forms::Label());
@@ -266,11 +273,14 @@ private: System::Windows::Forms::Label^ label4;
 			this->Colors = (gcnew System::Windows::Forms::Label());
 			this->colorDialog = (gcnew System::Windows::Forms::ColorDialog());
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
+			this->withoutFillButton = (gcnew System::Windows::Forms::RadioButton());
+			this->withFillButton = (gcnew System::Windows::Forms::RadioButton());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->deselectButton = (gcnew System::Windows::Forms::Button());
 			this->panel5 = (gcnew System::Windows::Forms::Panel());
-			this->cutButton = (gcnew System::Windows::Forms::Button());
 			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->cutButton = (gcnew System::Windows::Forms::Button());
+			this->sprayTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox))->BeginInit();
 			this->menuStrip->SuspendLayout();
 			this->pictureBoxPanel->SuspendLayout();
@@ -504,7 +514,7 @@ private: System::Windows::Forms::Label^ label4;
 			this->panel2->BackColor = System::Drawing::SystemColors::ControlLight;
 			this->panel2->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"panel2.BackgroundImage")));
 			this->panel2->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
-			this->panel2->Controls->Add(this->button1);
+			this->panel2->Controls->Add(this->sprayButton);
 			this->panel2->Controls->Add(this->brushButton);
 			this->panel2->Controls->Add(this->pipetteButton);
 			this->panel2->Controls->Add(this->rectangleButton);
@@ -518,15 +528,16 @@ private: System::Windows::Forms::Label^ label4;
 			this->panel2->Size = System::Drawing::Size(48, 708);
 			this->panel2->TabIndex = 15;
 			// 
-			// button1
+			// sprayButton
 			// 
-			this->button1->BackColor = System::Drawing::Color::Transparent;
-			this->button1->Location = System::Drawing::Point(4, 319);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(40, 38);
-			this->button1->TabIndex = 15;
-			this->button1->Text = L"spray";
-			this->button1->UseVisualStyleBackColor = false;
+			this->sprayButton->BackColor = System::Drawing::Color::Transparent;
+			this->sprayButton->Location = System::Drawing::Point(4, 319);
+			this->sprayButton->Name = L"sprayButton";
+			this->sprayButton->Size = System::Drawing::Size(40, 38);
+			this->sprayButton->TabIndex = 15;
+			this->sprayButton->Text = L"spray";
+			this->sprayButton->UseVisualStyleBackColor = false;
+			this->sprayButton->Click += gcnew System::EventHandler(this, &MainForm::sprayButton_Click);
 			// 
 			// selectionButton
 			// 
@@ -990,17 +1001,43 @@ private: System::Windows::Forms::Label^ label4;
 			// panel1
 			// 
 			this->panel1->BackColor = System::Drawing::SystemColors::ControlLight;
+			this->panel1->Controls->Add(this->withoutFillButton);
+			this->panel1->Controls->Add(this->withFillButton);
 			this->panel1->Controls->Add(this->label3);
 			this->panel1->Location = System::Drawing::Point(813, 30);
 			this->panel1->Name = L"panel1";
 			this->panel1->Size = System::Drawing::Size(567, 94);
 			this->panel1->TabIndex = 1;
 			// 
+			// withoutFillButton
+			// 
+			this->withoutFillButton->AutoSize = true;
+			this->withoutFillButton->Checked = true;
+			this->withoutFillButton->Location = System::Drawing::Point(92, 57);
+			this->withoutFillButton->Name = L"withoutFillButton";
+			this->withoutFillButton->Size = System::Drawing::Size(74, 17);
+			this->withoutFillButton->TabIndex = 42;
+			this->withoutFillButton->TabStop = true;
+			this->withoutFillButton->Text = L"Without fill";
+			this->withoutFillButton->UseVisualStyleBackColor = true;
+			this->withoutFillButton->CheckedChanged += gcnew System::EventHandler(this, &MainForm::withoutFillButton_CheckedChanged);
+			// 
+			// withFillButton
+			// 
+			this->withFillButton->AutoSize = true;
+			this->withFillButton->Location = System::Drawing::Point(92, 33);
+			this->withFillButton->Name = L"withFillButton";
+			this->withFillButton->Size = System::Drawing::Size(59, 17);
+			this->withFillButton->TabIndex = 41;
+			this->withFillButton->Text = L"With fill";
+			this->withFillButton->UseVisualStyleBackColor = true;
+			this->withFillButton->CheckedChanged += gcnew System::EventHandler(this, &MainForm::withFillButton_CheckedChanged);
+			// 
 			// label3
 			// 
 			this->label3->AutoSize = true;
 			this->label3->ForeColor = System::Drawing::SystemColors::ControlDarkDark;
-			this->label3->Location = System::Drawing::Point(337, 79);
+			this->label3->Location = System::Drawing::Point(259, 79);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(54, 13);
 			this->label3->TabIndex = 40;
@@ -1015,7 +1052,7 @@ private: System::Windows::Forms::Label^ label4;
 			this->deselectButton->TabIndex = 17;
 			this->deselectButton->Text = L"Deselect";
 			this->deselectButton->UseVisualStyleBackColor = true;
-			this->deselectButton->Click += gcnew System::EventHandler(this, &MainForm::button2_Click);
+			this->deselectButton->Click += gcnew System::EventHandler(this, &MainForm::deselectButton_Click);
 			// 
 			// panel5
 			// 
@@ -1029,6 +1066,16 @@ private: System::Windows::Forms::Label^ label4;
 			this->panel5->Size = System::Drawing::Size(174, 94);
 			this->panel5->TabIndex = 41;
 			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->ForeColor = System::Drawing::SystemColors::ControlDarkDark;
+			this->label4->Location = System::Drawing::Point(60, 79);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(51, 13);
+			this->label4->TabIndex = 41;
+			this->label4->Text = L"Selection";
+			// 
 			// cutButton
 			// 
 			this->cutButton->Enabled = false;
@@ -1040,15 +1087,10 @@ private: System::Windows::Forms::Label^ label4;
 			this->cutButton->UseVisualStyleBackColor = true;
 			this->cutButton->Click += gcnew System::EventHandler(this, &MainForm::cutButton_Click);
 			// 
-			// label4
+			// sprayTimer
 			// 
-			this->label4->AutoSize = true;
-			this->label4->ForeColor = System::Drawing::SystemColors::ControlDarkDark;
-			this->label4->Location = System::Drawing::Point(60, 79);
-			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(51, 13);
-			this->label4->TabIndex = 41;
-			this->label4->Text = L"Selection";
+			this->sprayTimer->Interval = 50;
+			this->sprayTimer->Tick += gcnew System::EventHandler(this, &MainForm::sprayTimer_Tick);
 			// 
 			// MainForm
 			// 
@@ -1144,7 +1186,7 @@ private: System::Void selectionButton_Click(System::Object^ sender, System::Even
 	currentTool = Tools::Selection;
 }
 private: System::Void pictureBox_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e);
-private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e);
+private: System::Void deselectButton_Click(System::Object^ sender, System::EventArgs^ e);
 private: System::Void newToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 private: System::Void openToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 private: System::Void saveToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
@@ -1153,5 +1195,9 @@ private: System::Void openFile();
 private: System::Void MainForm_SizeChanged(System::Object^ sender, System::EventArgs^ e) {
 }
 private: System::Void cutButton_Click(System::Object^ sender, System::EventArgs^ e);
+private: System::Void withFillButton_CheckedChanged(System::Object^ sender, System::EventArgs^ e);
+private: System::Void withoutFillButton_CheckedChanged(System::Object^ sender, System::EventArgs^ e);
+private: System::Void sprayTimer_Tick(System::Object^ sender, System::EventArgs^ e);
+private: System::Void sprayButton_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }

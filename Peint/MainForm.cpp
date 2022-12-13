@@ -237,6 +237,7 @@ System::Void MainForm::editColor_Click(System::Object^ sender, System::EventArgs
 
 System::Void MainForm::MainForm_Shown(System::Object^ sender, System::EventArgs^ e)
 {
+	srand(time(NULL));
 	pen = gcnew Pen(brushColor, (float)brushWidth);
 	brush = gcnew SolidBrush(Color::Black);
 	bmp = gcnew Bitmap(pictureBox->Width, pictureBox->Height);
@@ -277,6 +278,7 @@ System::Void MainForm::pictureBox_MouseDown(System::Object^ sender, System::Wind
 		brush->Color = brushColor;
 		pen->Color = brushColor;
 		pen->Width = (float)brushWidth;
+		int sprayWidth = brushWidth < 2 ? 2 : brushWidth;
 		switch (currentTool)
 		{
 		case Tools::Brush:
@@ -284,6 +286,14 @@ System::Void MainForm::pictureBox_MouseDown(System::Object^ sender, System::Wind
 			pictureBox->Image = bmp;
 			break;
 		case Tools::Spray:
+			for (int i = 0; i < 25; i++) {
+				int r = rand() % (sprayWidth / 2);
+				int deg = rand() % 360;
+				int x = round(r * cos(Math::PI / 180 * deg));
+				int y = round(r * sin(Math::PI / 180 * deg));
+				Canvas->FillPie(brush, startX - x, startY - y, 2, 2, 0, 360);
+			}
+			sprayTimer->Enabled = true;
 			break;
 		case Tools::Pipette:
 			break;
@@ -324,6 +334,7 @@ System::Void MainForm::pictureBox_MouseDown(System::Object^ sender, System::Wind
 
 System::Void MainForm::pictureBox_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {
+	sprayTimer->Enabled = false;
 	switch (currentTool)
 	{
 	case Tools::Brush:
@@ -401,6 +412,7 @@ System::Void MainForm::pictureBox_MouseMove(System::Object^ sender, System::Wind
 		rect.Y = Math::Min(e->Y, startY);
 		rect.Width = Math::Abs(startX - e->X);
 		rect.Height = Math::Abs(startY - e->Y);
+		int sprayWidth = brushWidth < 2 ? 2 : brushWidth;
 		switch (currentTool)
 		{
 		case Tools::Brush:
@@ -411,6 +423,17 @@ System::Void MainForm::pictureBox_MouseMove(System::Object^ sender, System::Wind
 			pictureBox->Image = bmp;
 			break;
 		case Tools::Spray:
+			brush->Color = brushColor;
+			for (int i = 0; i < 25; i++) {
+				int r = rand() % (sprayWidth / 2);
+				int deg = rand() % 360;
+				int x = round(r * cos(Math::PI / 180 * deg));
+				int y = round(r * sin(Math::PI / 180 * deg));
+				Canvas->FillPie(brush, startX - x, startY - y, 2, 2, 0, 360);
+			}
+			startX = e->X;
+			startY = e->Y;
+			pictureBox->Image = bmp;
 			break;
 		case Tools::Pipette:
 			break;
@@ -433,7 +456,10 @@ System::Void MainForm::pictureBox_MouseMove(System::Object^ sender, System::Wind
 		case Tools::Ellipse:
 			tempBMP = (Bitmap^)bmp->Clone();
 			tempCanvas = Graphics::FromImage(tempBMP);
-			tempCanvas->DrawEllipse(pen, rect);
+			if (needFill || (rect.Width < pen->Width*2 || rect.Height < pen->Width*2))
+				tempCanvas->FillEllipse(brush, rect);
+			else
+				tempCanvas->DrawEllipse(pen, Rectangle(rect.X + pen->Width / 2, rect.Y + pen->Width / 2, rect.Width - pen->Width, rect.Height - pen->Width));
 			pictureBox->Image = tempBMP;
 			break;
 		case Tools::Rectangle:
@@ -441,26 +467,16 @@ System::Void MainForm::pictureBox_MouseMove(System::Object^ sender, System::Wind
 			tempBMP = (Bitmap^)bmp->Clone();
 			tempCanvas = Graphics::FromImage(tempBMP);
 			if (rect.Width != 0 && rect.Height != 0) {
-				tempCanvas->DrawRectangle(pen, rect);
-				tempCanvas->FillPie(brush, e->X - brushWidth / 2, e->Y - brushWidth / 2, brushWidth, brushWidth, 0, 360);
-			}
-			else
-			{
-				if (rect.Width == 0)
-					tempCanvas->DrawLine(pen, rect.X, rect.Y - brushWidth / 2, rect.X + rect.Width, rect.Y + rect.Height + brushWidth / 2);
-				else 
-					tempCanvas->DrawLine(pen, rect.X - brushWidth / 2, rect.Y, rect.X + rect.Width + brushWidth / 2, rect.Y + rect.Height);
+				if (needFill || (rect.Width < pen->Width * 2 || rect.Height < pen->Width * 2))
+					tempCanvas->FillRectangle(brush, rect);
+				else
+					tempCanvas->DrawRectangle(pen, Rectangle(rect.X + pen->Width / 2, rect.Y + pen->Width / 2, rect.Width - pen->Width, rect.Height - pen->Width));
 			}
 			pictureBox->Image = tempBMP;
 			break;
 		}
 		case Tools::Selection:
 		{
-			//ControlPaint^ c;
-			//tempBMP = (Bitmap^)bmp->Clone();
-			//tempCanvas = Graphics::FromImage(tempBMP);
-			//c->DrawFocusRectangle(tempCanvas, rect);
-			//pictureBox->Image = tempBMP;
 			if (draggedFragment != nullptr)
 			{
 				draggedFragment->Location.Offset(e->Location.X - mousePos2.X, e->Location.Y - mousePos2.Y);
@@ -479,6 +495,20 @@ System::Void MainForm::pictureBox_MouseMove(System::Object^ sender, System::Wind
 		mousePos1 = e->Location;
 		mousePos2 = e->Location;
 	}
+}
+
+System::Void MainForm::sprayTimer_Tick(System::Object^ sender, System::EventArgs^ e)
+{
+	brush->Color = brushColor;
+	int sprayWidth = brushWidth < 2 ? 2 : brushWidth;
+	for (int i = 0; i < 25; i++) {
+		int r = rand() % (sprayWidth / 2);
+		int deg = rand() % 360;
+		int x = round(r * cos(Math::PI / 180 * deg));
+		int y = round(r * sin(Math::PI / 180 * deg));
+		Canvas->FillPie(brush, startX - x, startY - y, 2, 2, 0, 360);
+	}
+	pictureBox->Image = bmp;
 }
 
 Rectangle getRect(Point p1, Point p2)
@@ -613,7 +643,12 @@ System::Void MainForm::pipetteButton_Click(System::Object^ sender, System::Event
 	currentTool = Tools::Pipette;
 }
 
-System::Void MainForm::button2_Click(System::Object^ sender, System::EventArgs^ e)
+System::Void MainForm::sprayButton_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	currentTool = Tools::Spray;
+}
+
+System::Void MainForm::deselectButton_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	draggedFragment = nullptr;
 	pictureBox->Invalidate();
@@ -623,9 +658,22 @@ System::Void MainForm::button2_Click(System::Object^ sender, System::EventArgs^ 
 
 System::Void MainForm::cutButton_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	Canvas->FillRectangle(gcnew SolidBrush(Color::White), draggedFragment->SourceRect);
-	pictureBox->Image = bmp;
+	if (draggedFragment != nullptr)
+	{
+		Canvas->FillRectangle(gcnew SolidBrush(Color::White), draggedFragment->SourceRect);
+		pictureBox->Image = bmp;
+	}
 	draggedFragment = nullptr;
 	deselectButton->Enabled = false;
 	cutButton->Enabled = false;
+}
+
+System::Void MainForm::withFillButton_CheckedChanged(System::Object^ sender, System::EventArgs^ e)
+{
+	needFill = true;
+}
+
+System::Void MainForm::withoutFillButton_CheckedChanged(System::Object^ sender, System::EventArgs^ e)
+{
+	needFill = false;
 }
