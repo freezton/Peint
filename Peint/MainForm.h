@@ -435,77 +435,84 @@ private: System::ComponentModel::IContainer^ components;
 			// rectangleButton
 			// 
 			this->rectangleButton->BackColor = System::Drawing::Color::Transparent;
+			this->rectangleButton->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"rectangleButton.BackgroundImage")));
+			this->rectangleButton->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->rectangleButton->Location = System::Drawing::Point(4, 97);
 			this->rectangleButton->Name = L"rectangleButton";
 			this->rectangleButton->Size = System::Drawing::Size(40, 40);
 			this->rectangleButton->TabIndex = 8;
-			this->rectangleButton->Text = L"rect";
 			this->rectangleButton->UseVisualStyleBackColor = false;
 			this->rectangleButton->Click += gcnew System::EventHandler(this, &MainForm::rectangleButton_Click);
 			// 
 			// brushButton
 			// 
 			this->brushButton->BackColor = System::Drawing::Color::Transparent;
+			this->brushButton->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"brushButton.BackgroundImage")));
+			this->brushButton->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->brushButton->Location = System::Drawing::Point(4, 7);
 			this->brushButton->Name = L"brushButton";
 			this->brushButton->Size = System::Drawing::Size(40, 40);
 			this->brushButton->TabIndex = 9;
-			this->brushButton->Text = L"br";
 			this->brushButton->UseVisualStyleBackColor = false;
 			this->brushButton->Click += gcnew System::EventHandler(this, &MainForm::brushButton_Click);
 			// 
 			// ellipseButton
 			// 
 			this->ellipseButton->BackColor = System::Drawing::Color::Transparent;
+			this->ellipseButton->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"ellipseButton.BackgroundImage")));
+			this->ellipseButton->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->ellipseButton->Location = System::Drawing::Point(4, 143);
 			this->ellipseButton->Name = L"ellipseButton";
-			this->ellipseButton->Size = System::Drawing::Size(40, 38);
+			this->ellipseButton->Size = System::Drawing::Size(40, 40);
 			this->ellipseButton->TabIndex = 10;
-			this->ellipseButton->Text = L"elips";
 			this->ellipseButton->UseVisualStyleBackColor = false;
 			this->ellipseButton->Click += gcnew System::EventHandler(this, &MainForm::ellipseButton_Click);
 			// 
 			// lineButton
 			// 
 			this->lineButton->BackColor = System::Drawing::Color::Transparent;
+			this->lineButton->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"lineButton.BackgroundImage")));
+			this->lineButton->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->lineButton->Location = System::Drawing::Point(4, 53);
 			this->lineButton->Name = L"lineButton";
-			this->lineButton->Size = System::Drawing::Size(40, 38);
+			this->lineButton->Size = System::Drawing::Size(40, 40);
 			this->lineButton->TabIndex = 11;
-			this->lineButton->Text = L"line";
 			this->lineButton->UseVisualStyleBackColor = false;
 			this->lineButton->Click += gcnew System::EventHandler(this, &MainForm::lineButton_Click);
 			// 
 			// fillButton
 			// 
 			this->fillButton->BackColor = System::Drawing::Color::Transparent;
+			this->fillButton->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"fillButton.BackgroundImage")));
+			this->fillButton->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->fillButton->Location = System::Drawing::Point(4, 187);
 			this->fillButton->Name = L"fillButton";
-			this->fillButton->Size = System::Drawing::Size(40, 38);
+			this->fillButton->Size = System::Drawing::Size(40, 40);
 			this->fillButton->TabIndex = 12;
-			this->fillButton->Text = L"fill";
 			this->fillButton->UseVisualStyleBackColor = false;
 			this->fillButton->Click += gcnew System::EventHandler(this, &MainForm::fillButton_Click);
 			// 
 			// eraserButton
 			// 
 			this->eraserButton->BackColor = System::Drawing::Color::Transparent;
+			this->eraserButton->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"eraserButton.BackgroundImage")));
+			this->eraserButton->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->eraserButton->Location = System::Drawing::Point(4, 231);
 			this->eraserButton->Name = L"eraserButton";
-			this->eraserButton->Size = System::Drawing::Size(40, 38);
+			this->eraserButton->Size = System::Drawing::Size(40, 40);
 			this->eraserButton->TabIndex = 13;
-			this->eraserButton->Text = L"eraser";
 			this->eraserButton->UseVisualStyleBackColor = false;
 			this->eraserButton->Click += gcnew System::EventHandler(this, &MainForm::eraserButton_Click);
 			// 
 			// pipetteButton
 			// 
 			this->pipetteButton->BackColor = System::Drawing::Color::Transparent;
+			this->pipetteButton->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pipetteButton.BackgroundImage")));
+			this->pipetteButton->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->pipetteButton->Location = System::Drawing::Point(4, 275);
 			this->pipetteButton->Name = L"pipetteButton";
-			this->pipetteButton->Size = System::Drawing::Size(40, 38);
+			this->pipetteButton->Size = System::Drawing::Size(40, 40);
 			this->pipetteButton->TabIndex = 14;
-			this->pipetteButton->Text = L"pip";
 			this->pipetteButton->UseVisualStyleBackColor = false;
 			this->pipetteButton->Click += gcnew System::EventHandler(this, &MainForm::pipetteButton_Click);
 			// 
@@ -531,11 +538,12 @@ private: System::ComponentModel::IContainer^ components;
 			// sprayButton
 			// 
 			this->sprayButton->BackColor = System::Drawing::Color::Transparent;
+			this->sprayButton->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"sprayButton.BackgroundImage")));
+			this->sprayButton->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->sprayButton->Location = System::Drawing::Point(4, 319);
 			this->sprayButton->Name = L"sprayButton";
-			this->sprayButton->Size = System::Drawing::Size(40, 38);
+			this->sprayButton->Size = System::Drawing::Size(40, 40);
 			this->sprayButton->TabIndex = 15;
-			this->sprayButton->Text = L"spray";
 			this->sprayButton->UseVisualStyleBackColor = false;
 			this->sprayButton->Click += gcnew System::EventHandler(this, &MainForm::sprayButton_Click);
 			// 
