@@ -611,41 +611,57 @@ System::Void MainForm::saveAsToolStripMenuItem_Click(System::Object^ sender, Sys
 System::Void MainForm::brushButton_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	currentTool = Tools::Brush;
+	withFillButton->Enabled = false;
+	withoutFillButton->Enabled = false;
 }
 
 System::Void MainForm::rectangleButton_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	currentTool = Tools::Rectangle;
+	withFillButton->Enabled = true;
+	withoutFillButton->Enabled = true;
 }
 
 System::Void MainForm::ellipseButton_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	currentTool = Tools::Ellipse;
+	withFillButton->Enabled = true;
+	withoutFillButton->Enabled = true;
 }
 
 System::Void MainForm::lineButton_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	currentTool = Tools::Line;
+	withFillButton->Enabled = false;
+	withoutFillButton->Enabled = false;
 }
 
 System::Void MainForm::fillButton_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	currentTool = Tools::Fill;
+	withFillButton->Enabled = false;
+	withoutFillButton->Enabled = false;
 }
 
 System::Void MainForm::eraserButton_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	currentTool = Tools::Eraser;
+	withFillButton->Enabled = false;
+	withoutFillButton->Enabled = false;
 }
 
 System::Void MainForm::pipetteButton_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	currentTool = Tools::Pipette;
+	withFillButton->Enabled = false;
+	withoutFillButton->Enabled = false;
 }
 
 System::Void MainForm::sprayButton_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	currentTool = Tools::Spray;
+	withFillButton->Enabled = false;
+	withoutFillButton->Enabled = false;
 }
 
 System::Void MainForm::deselectButton_Click(System::Object^ sender, System::EventArgs^ e)

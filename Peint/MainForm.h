@@ -1013,9 +1013,12 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->withoutFillButton->AutoSize = true;
 			this->withoutFillButton->Checked = true;
-			this->withoutFillButton->Location = System::Drawing::Point(92, 57);
+			this->withoutFillButton->Enabled = false;
+			this->withoutFillButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->withoutFillButton->Location = System::Drawing::Point(17, 16);
 			this->withoutFillButton->Name = L"withoutFillButton";
-			this->withoutFillButton->Size = System::Drawing::Size(74, 17);
+			this->withoutFillButton->Size = System::Drawing::Size(100, 24);
 			this->withoutFillButton->TabIndex = 42;
 			this->withoutFillButton->TabStop = true;
 			this->withoutFillButton->Text = L"Without fill";
@@ -1025,9 +1028,12 @@ private: System::ComponentModel::IContainer^ components;
 			// withFillButton
 			// 
 			this->withFillButton->AutoSize = true;
-			this->withFillButton->Location = System::Drawing::Point(92, 33);
+			this->withFillButton->Enabled = false;
+			this->withFillButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->withFillButton->Location = System::Drawing::Point(17, 41);
 			this->withFillButton->Name = L"withFillButton";
-			this->withFillButton->Size = System::Drawing::Size(59, 17);
+			this->withFillButton->Size = System::Drawing::Size(77, 24);
 			this->withFillButton->TabIndex = 41;
 			this->withFillButton->Text = L"With fill";
 			this->withFillButton->UseVisualStyleBackColor = true;
