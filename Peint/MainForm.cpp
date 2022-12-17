@@ -4,6 +4,7 @@
 #include <string>
 #include <time.h>
 #include "NewFileForm.h"
+#include "AboutForm.h"
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -245,7 +246,7 @@ System::Void MainForm::MainForm_Shown(System::Object^ sender, System::EventArgs^
 	history = gcnew History();
 	file = gcnew FileManager();
 
-	MainForm::Text = file->getFileName() + " - Peint";
+	MainForm::Text = file->getFileName() + " - Pixelmaker";
 	Canvas = Graphics::FromImage(bmp);
 	Canvas->Clear(Color::White);
 	pictureBox->Image = bmp;
@@ -299,8 +300,6 @@ System::Void MainForm::pictureBox_MouseDown(System::Object^ sender, System::Wind
 			}
 			sprayTimer->Enabled = true;
 			break;
-		case Tools::Pipette:
-			break;
 		case Tools::Eraser:
 			pen->Color = Color::White;
 			brush->Color = Color::White;
@@ -339,47 +338,21 @@ System::Void MainForm::pictureBox_MouseDown(System::Object^ sender, System::Wind
 System::Void MainForm::pictureBox_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {
 	sprayTimer->Enabled = false;
-	switch (currentTool)
+	if (currentTool == Tools::Pipette)
 	{
-	case Tools::Brush:
-		break;
-	case Tools::Spray:
-		break;
-	case Tools::Pipette:
 		brushColor = bmp->GetPixel(e->X, e->Y);
 		currentColor->BackColor = brushColor;
 		currentTool = Tools::Brush;
 		brushButton->Focus();
-		break;
-	case Tools::Eraser:
-		break;
-	case Tools::Fill:
-		break;
-	case Tools::Line:
-		if (tempBMP != nullptr)
-		{
-			bmp = (Bitmap^)tempBMP->Clone();
-			Canvas = Graphics::FromImage(bmp);
-			pictureBox->Image = bmp;
-		}
-		break;
-	case Tools::Ellipse:
-		if (tempBMP != nullptr)
-		{
-			bmp = (Bitmap^)tempBMP->Clone();
-			Canvas = Graphics::FromImage(bmp);
-			pictureBox->Image = bmp;
-		}
-		break;
-	case Tools::Rectangle:
-		if (tempBMP != nullptr)
-		{
-			bmp = (Bitmap^)tempBMP->Clone();
-			Canvas = Graphics::FromImage(bmp);
-			pictureBox->Image = bmp;
-		}
-		break;
-	case Tools::Selection:
+	}
+	else if (currentTool == Tools::Line || currentTool == Tools::Ellipse || currentTool == Tools::Rectangle)
+	{
+		bmp = (Bitmap^)tempBMP->Clone();
+		Canvas = Graphics::FromImage(bmp);
+		pictureBox->Image = bmp;
+	}
+	else if (currentTool == Tools::Selection)
+	{
 		if (mousePos1 != mousePos2)
 		{
 			draggedFragment = gcnew DraggedFragment();
@@ -401,11 +374,10 @@ System::Void MainForm::pictureBox_MouseUp(System::Object^ sender, System::Window
 			}
 		}
 		pictureBox->Invalidate();
-		break;
-	default:
-		break;
 	}
 	history->push((Bitmap^)bmp->Clone());
+	backToolStripMenuItem->Enabled = true;
+	aheadToolStripMenuItem->Enabled = false;
 }
 
 System::Void MainForm::pictureBox_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
@@ -439,16 +411,12 @@ System::Void MainForm::pictureBox_MouseMove(System::Object^ sender, System::Wind
 			startY = e->Y;
 			pictureBox->Image = bmp;
 			break;
-		case Tools::Pipette:
-			break;
 		case Tools::Eraser:
 			Canvas->DrawLine(pen, startX, startY, e->X, e->Y);
 			startX = e->X;
 			startY = e->Y;
 			Canvas->FillPie(brush, e->X - brushWidth / 2, e->Y - brushWidth / 2, brushWidth, brushWidth, 0, 360);
 			pictureBox->Image = bmp;
-			break;
-		case Tools::Fill:
 			break;
 		case Tools::Line:
 			tempBMP = (Bitmap^)bmp->Clone();
@@ -552,7 +520,10 @@ System::Void MainForm::backToolStripMenuItem_Click(System::Object^ sender, Syste
 		bmp = (Bitmap^)history->goBack()->Clone();
 		pictureBox->Image = (Bitmap^)bmp->Clone();
 		Canvas = Graphics::FromImage(bmp);
+		aheadToolStripMenuItem->Enabled = true;
 	}
+	if (!history->hasPrevious())
+		backToolStripMenuItem->Enabled = false;
 }
 
 System::Void MainForm::aheadToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
@@ -562,19 +533,19 @@ System::Void MainForm::aheadToolStripMenuItem_Click(System::Object^ sender, Syst
 		bmp = (Bitmap^)history->goForward()->Clone();
 		pictureBox->Image = (Bitmap^)bmp->Clone();
 		Canvas = Graphics::FromImage(bmp);
+		backToolStripMenuItem->Enabled = true;
 	}
+	if (!history->hasNext())
+		aheadToolStripMenuItem->Enabled = false;
 }
 
 System::Void MainForm::newToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	Windows::Forms::DialogResult result;
 	if (file->isNeedSave()) {
-		result = Windows::Forms::MessageBox::Show(L"Вы хотите сохранить изменения в файле " + file->getFileName() + L"?", L"Открытие", MessageBoxButtons::YesNoCancel);
+		result = Windows::Forms::MessageBox::Show(L"Do you want to save changes to the file " + file->getFileName() + L"?", L"Save", MessageBoxButtons::YesNoCancel);
 		if (result == Windows::Forms::DialogResult::Yes) {
-			if (file->save(pictureBox->Image)) {
-				NewFileForm^ a = gcnew NewFileForm();
-				a->Show();
-			}
+			file->save(pictureBox->Image);
 		}
 	}
 	if (result == Windows::Forms::DialogResult::No || !file->isNeedSave()) {
@@ -582,7 +553,7 @@ System::Void MainForm::newToolStripMenuItem_Click(System::Object^ sender, System
 		newFileDialog->ShowDialog();
 		if (newFileDialog->isCreated) {
 			file = gcnew FileManager(newFileDialog->width, newFileDialog->height);
-			MainForm::Text = file->getFileName() + " - Peint";
+			MainForm::Text = file->getFileName() + " - Pixelmaker";
 			bmp = file->getBmp();
 			pictureBox->Width = bmp->Width;
 			pictureBox->Height = bmp->Height;
@@ -594,13 +565,15 @@ System::Void MainForm::newToolStripMenuItem_Click(System::Object^ sender, System
 			history->push((Bitmap^)bmp->Clone());
 			pictureBoxPanel->HorizontalScroll->Value = 0;
 			pictureBoxPanel->VerticalScroll->Value = 0;
+			pictureBoxPanel->Width = Math::Min(pictureBox->Width + 1, 1327);
+			pictureBoxPanel->Height = Math::Min(pictureBox->Height + 1, 598);
 		}
 	}
 }
 
 System::Void MainForm::openFile() {
 	if (file->open()) {
-		MainForm::Text = file->getFileName() + " - Peint";
+		MainForm::Text = file->getFileName() + " - Pixelmaker";
 		bmp = file->getBmp();
 		pictureBox->Width = bmp->Width;
 		pictureBox->Height = bmp->Height;
@@ -626,18 +599,24 @@ System::Void MainForm::openToolStripMenuItem_Click(System::Object^ sender, Syste
 	if (result == Windows::Forms::DialogResult::No || !file->isNeedSave()) {
 		openFile();
 	}
-	
 }
 
 System::Void MainForm::saveToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	file->save(pictureBox->Image);
+	MainForm::Text = file->getFileName() + " - Pixelmaker";
 }
 
 System::Void MainForm::saveAsToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	file->saveAs(pictureBox->Image);
-	MainForm::Text = file->getFileName() + " - Peint";
+	MainForm::Text = file->getFileName() + " - Pixelmaker";
+}
+
+System::Void MainForm::aboutToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	AboutForm^ form = gcnew AboutForm();
+	form->Show();
 }
 
 System::Void MainForm::brushButton_Click(System::Object^ sender, System::EventArgs^ e)
@@ -694,6 +673,10 @@ System::Void MainForm::sprayButton_Click(System::Object^ sender, System::EventAr
 	currentTool = Tools::Spray;
 	withFillButton->Enabled = false;
 	withoutFillButton->Enabled = false;
+}
+
+System::Void MainForm::selectionButton_Click(System::Object^ sender, System::EventArgs^ e) {
+	currentTool = Tools::Selection;
 }
 
 System::Void MainForm::deselectButton_Click(System::Object^ sender, System::EventArgs^ e)

@@ -184,6 +184,7 @@ private: System::Windows::Forms::Label^ label4;
 private: System::Windows::Forms::RadioButton^ withoutFillButton;
 private: System::Windows::Forms::RadioButton^ withFillButton;
 private: System::Windows::Forms::Timer^ sprayTimer;
+
 private: System::ComponentModel::IContainer^ components;
 
 
@@ -358,6 +359,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->aboutToolStripMenuItem->ShortcutKeys = System::Windows::Forms::Keys::F1;
 			this->aboutToolStripMenuItem->Size = System::Drawing::Size(184, 22);
 			this->aboutToolStripMenuItem->Text = L"About";
+			this->aboutToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::aboutToolStripMenuItem_Click);
 			// 
 			// menuStrip
 			// 
@@ -374,19 +376,21 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			// backToolStripMenuItem
 			// 
+			this->backToolStripMenuItem->Enabled = false;
+			this->backToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"backToolStripMenuItem.Image")));
 			this->backToolStripMenuItem->Name = L"backToolStripMenuItem";
 			this->backToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::Z));
-			this->backToolStripMenuItem->Size = System::Drawing::Size(44, 20);
-			this->backToolStripMenuItem->Text = L"Back";
+			this->backToolStripMenuItem->Size = System::Drawing::Size(28, 20);
 			this->backToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::backToolStripMenuItem_Click);
 			// 
 			// aheadToolStripMenuItem
 			// 
+			this->aheadToolStripMenuItem->Enabled = false;
+			this->aheadToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"aheadToolStripMenuItem.Image")));
 			this->aheadToolStripMenuItem->Name = L"aheadToolStripMenuItem";
 			this->aheadToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>(((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::Shift)
 				| System::Windows::Forms::Keys::Z));
-			this->aheadToolStripMenuItem->Size = System::Drawing::Size(53, 20);
-			this->aheadToolStripMenuItem->Text = L"Ahead";
+			this->aheadToolStripMenuItem->Size = System::Drawing::Size(28, 20);
 			this->aheadToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::aheadToolStripMenuItem_Click);
 			// 
 			// colorButton1
@@ -1135,6 +1139,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->DoubleBuffered = true;
 			this->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->MaximizeBox = false;
 			this->Name = L"MainForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
@@ -1208,24 +1213,21 @@ private: System::ComponentModel::IContainer^ components;
 	private: System::Void colorButton29_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void colorButton30_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void editColor_Click(System::Object^ sender, System::EventArgs^ e);
-private: System::Void aheadToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-private: System::Void selectionButton_Click(System::Object^ sender, System::EventArgs^ e) {
-	currentTool = Tools::Selection;
-}
-private: System::Void pictureBox_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e);
-private: System::Void deselectButton_Click(System::Object^ sender, System::EventArgs^ e);
-private: System::Void newToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-private: System::Void openToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-private: System::Void saveToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-private: System::Void saveAsToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-private: System::Void openFile();
-private: System::Void MainForm_SizeChanged(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void cutButton_Click(System::Object^ sender, System::EventArgs^ e);
-private: System::Void withFillButton_CheckedChanged(System::Object^ sender, System::EventArgs^ e);
-private: System::Void withoutFillButton_CheckedChanged(System::Object^ sender, System::EventArgs^ e);
-private: System::Void sprayTimer_Tick(System::Object^ sender, System::EventArgs^ e);
-private: System::Void sprayButton_Click(System::Object^ sender, System::EventArgs^ e);
-private: System::Void MainForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e);
+	private: System::Void aheadToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void selectionButton_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void pictureBox_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e);
+	private: System::Void deselectButton_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void newToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void openToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void saveToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void saveAsToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void openFile();
+	private: System::Void cutButton_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void withFillButton_CheckedChanged(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void withoutFillButton_CheckedChanged(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void sprayTimer_Tick(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void sprayButton_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void MainForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e);
+	private: System::Void aboutToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }

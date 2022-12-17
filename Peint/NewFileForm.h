@@ -165,6 +165,7 @@ namespace Peint {
 			this->MaximizeBox = false;
 			this->MinimizeBox = false;
 			this->Name = L"NewFileForm";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"New file";
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox1->PerformLayout();
