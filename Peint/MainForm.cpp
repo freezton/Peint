@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <time.h>
+#include "NewFileForm.h"
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -273,6 +274,9 @@ System::Void MainForm::pictureBox_MouseDown(System::Object^ sender, System::Wind
 {
 	if (e->Button == System::Windows::Forms::MouseButtons::Left)
 	{
+		if (!file->isNeedSave()) {
+			file->setNeedSave(true);
+		}
 		startX = e->X;
 		startY = e->Y;
 		brush->Color = brushColor;
@@ -563,7 +567,35 @@ System::Void MainForm::aheadToolStripMenuItem_Click(System::Object^ sender, Syst
 
 System::Void MainForm::newToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
-
+	Windows::Forms::DialogResult result;
+	if (file->isNeedSave()) {
+		result = Windows::Forms::MessageBox::Show(L"Вы хотите сохранить изменения в файле " + file->getFileName() + L"?", L"Открытие", MessageBoxButtons::YesNoCancel);
+		if (result == Windows::Forms::DialogResult::Yes) {
+			if (file->save(pictureBox->Image)) {
+				NewFileForm^ a = gcnew NewFileForm();
+				a->Show();
+			}
+		}
+	}
+	if (result == Windows::Forms::DialogResult::No || !file->isNeedSave()) {
+		NewFileForm^ newFileDialog = gcnew NewFileForm();
+		newFileDialog->ShowDialog();
+		if (newFileDialog->isCreated) {
+			file = gcnew FileManager(newFileDialog->width, newFileDialog->height);
+			MainForm::Text = file->getFileName() + " - Peint";
+			bmp = file->getBmp();
+			pictureBox->Width = bmp->Width;
+			pictureBox->Height = bmp->Height;
+			pictureBox->Image = bmp;
+			Canvas = Graphics::FromImage(bmp);
+			Canvas->Clear(Color::White);
+			Canvas->FillPie(gcnew SolidBrush(bmp->GetPixel(1, 1)), 1, 1, 1, 1, 0, 360);
+			history = gcnew History();
+			history->push((Bitmap^)bmp->Clone());
+			pictureBoxPanel->HorizontalScroll->Value = 0;
+			pictureBoxPanel->VerticalScroll->Value = 0;
+		}
+	}
 }
 
 System::Void MainForm::openFile() {
@@ -584,7 +616,7 @@ System::Void MainForm::openToolStripMenuItem_Click(System::Object^ sender, Syste
 {
 	Windows::Forms::DialogResult result;
 	if (file->isNeedSave()) {
-		result = Windows::Forms::MessageBox::Show(L"Вы хотите сохранить изменения в файле " + file->getFileName() + L"?", L"Открытие", MessageBoxButtons::YesNoCancel);
+		result = Windows::Forms::MessageBox::Show(L"Do you want to save changes to the file " + file->getFileName() + L"?", L"Save", MessageBoxButtons::YesNoCancel);
 		if (result == Windows::Forms::DialogResult::Yes) {
 			if (file->save(pictureBox->Image)) {
 				openFile();
@@ -692,4 +724,16 @@ System::Void MainForm::withFillButton_CheckedChanged(System::Object^ sender, Sys
 System::Void MainForm::withoutFillButton_CheckedChanged(System::Object^ sender, System::EventArgs^ e)
 {
 	needFill = false;
+}
+
+System::Void MainForm::MainForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e)
+{
+	Windows::Forms::DialogResult result;
+	if (file->isNeedSave()) {
+		result = Windows::Forms::MessageBox::Show(L"Do you want to save changes to the file " + file->getFileName() + L"?", L"Save", MessageBoxButtons::YesNoCancel);
+		if (result == Windows::Forms::DialogResult::Yes) {
+			file->save(pictureBox->Image);
+		}
+	}
+	file->setNeedSave(false);
 }

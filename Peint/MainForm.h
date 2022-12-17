@@ -56,7 +56,7 @@ namespace Peint {
 
 		int startX;
 		int startY;
-		int brushWidth = 10;
+		int brushWidth = 3;
 		bool needFill = false;
 		bool needCut = false;
 
@@ -418,7 +418,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->brushWidthBar->Name = L"brushWidthBar";
 			this->brushWidthBar->Size = System::Drawing::Size(200, 45);
 			this->brushWidthBar->TabIndex = 7;
-			this->brushWidthBar->Value = 10;
+			this->brushWidthBar->Value = 3;
 			this->brushWidthBar->ValueChanged += gcnew System::EventHandler(this, &MainForm::brushWidthBar_ValueChanged);
 			// 
 			// brushWidhtUpDown
@@ -429,7 +429,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->brushWidhtUpDown->Name = L"brushWidhtUpDown";
 			this->brushWidhtUpDown->Size = System::Drawing::Size(150, 20);
 			this->brushWidhtUpDown->TabIndex = 1;
-			this->brushWidhtUpDown->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
+			this->brushWidhtUpDown->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
 			this->brushWidhtUpDown->ValueChanged += gcnew System::EventHandler(this, &MainForm::brushWidhtUpDown_ValueChanged);
 			// 
 			// rectangleButton
@@ -1024,7 +1024,9 @@ private: System::ComponentModel::IContainer^ components;
 			this->withoutFillButton->Enabled = false;
 			this->withoutFillButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->withoutFillButton->Location = System::Drawing::Point(17, 16);
+			this->withoutFillButton->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)),
+				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
+			this->withoutFillButton->Location = System::Drawing::Point(17, 17);
 			this->withoutFillButton->Name = L"withoutFillButton";
 			this->withoutFillButton->Size = System::Drawing::Size(100, 24);
 			this->withoutFillButton->TabIndex = 42;
@@ -1039,7 +1041,9 @@ private: System::ComponentModel::IContainer^ components;
 			this->withFillButton->Enabled = false;
 			this->withFillButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->withFillButton->Location = System::Drawing::Point(17, 41);
+			this->withFillButton->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)),
+				static_cast<System::Int32>(static_cast<System::Byte>(64)));
+			this->withFillButton->Location = System::Drawing::Point(123, 17);
 			this->withFillButton->Name = L"withFillButton";
 			this->withFillButton->Size = System::Drawing::Size(77, 24);
 			this->withFillButton->TabIndex = 41;
@@ -1060,6 +1064,10 @@ private: System::ComponentModel::IContainer^ components;
 			// deselectButton
 			// 
 			this->deselectButton->Enabled = false;
+			this->deselectButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->deselectButton->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)),
+				static_cast<System::Int32>(static_cast<System::Byte>(64)));
 			this->deselectButton->Location = System::Drawing::Point(73, 9);
 			this->deselectButton->Name = L"deselectButton";
 			this->deselectButton->Size = System::Drawing::Size(92, 28);
@@ -1093,6 +1101,10 @@ private: System::ComponentModel::IContainer^ components;
 			// cutButton
 			// 
 			this->cutButton->Enabled = false;
+			this->cutButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->cutButton->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)),
+				static_cast<System::Int32>(static_cast<System::Byte>(64)));
 			this->cutButton->Location = System::Drawing::Point(73, 41);
 			this->cutButton->Name = L"cutButton";
 			this->cutButton->Size = System::Drawing::Size(92, 28);
@@ -1127,6 +1139,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->Name = L"MainForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"MainForm";
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &MainForm::MainForm_FormClosing);
 			this->Shown += gcnew System::EventHandler(this, &MainForm::MainForm_Shown);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox))->EndInit();
 			this->menuStrip->ResumeLayout(false);
@@ -1213,5 +1226,6 @@ private: System::Void withFillButton_CheckedChanged(System::Object^ sender, Syst
 private: System::Void withoutFillButton_CheckedChanged(System::Object^ sender, System::EventArgs^ e);
 private: System::Void sprayTimer_Tick(System::Object^ sender, System::EventArgs^ e);
 private: System::Void sprayButton_Click(System::Object^ sender, System::EventArgs^ e);
+private: System::Void MainForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e);
 };
 }
