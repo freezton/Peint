@@ -1229,5 +1229,6 @@ private: System::ComponentModel::IContainer^ components;
 	private: System::Void sprayButton_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void MainForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e);
 	private: System::Void aboutToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void deselect();
 };
 }

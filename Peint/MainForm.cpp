@@ -619,11 +619,23 @@ System::Void MainForm::aboutToolStripMenuItem_Click(System::Object^ sender, Syst
 	form->Show();
 }
 
+System::Void MainForm::deselect()
+{
+	if (draggedFragment != nullptr)
+	{
+		draggedFragment = nullptr;
+		pictureBox->Invalidate();
+		deselectButton->Enabled = false;
+		cutButton->Enabled = false;
+	}
+}
+
 System::Void MainForm::brushButton_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	currentTool = Tools::Brush;
 	withFillButton->Enabled = false;
 	withoutFillButton->Enabled = false;
+	deselect();
 }
 
 System::Void MainForm::rectangleButton_Click(System::Object^ sender, System::EventArgs^ e)
@@ -631,6 +643,7 @@ System::Void MainForm::rectangleButton_Click(System::Object^ sender, System::Eve
 	currentTool = Tools::Rectangle;
 	withFillButton->Enabled = true;
 	withoutFillButton->Enabled = true;
+	deselect();
 }
 
 System::Void MainForm::ellipseButton_Click(System::Object^ sender, System::EventArgs^ e)
@@ -638,6 +651,7 @@ System::Void MainForm::ellipseButton_Click(System::Object^ sender, System::Event
 	currentTool = Tools::Ellipse;
 	withFillButton->Enabled = true;
 	withoutFillButton->Enabled = true;
+	deselect();
 }
 
 System::Void MainForm::lineButton_Click(System::Object^ sender, System::EventArgs^ e)
@@ -645,6 +659,7 @@ System::Void MainForm::lineButton_Click(System::Object^ sender, System::EventArg
 	currentTool = Tools::Line;
 	withFillButton->Enabled = false;
 	withoutFillButton->Enabled = false;
+	deselect();
 }
 
 System::Void MainForm::fillButton_Click(System::Object^ sender, System::EventArgs^ e)
@@ -652,6 +667,7 @@ System::Void MainForm::fillButton_Click(System::Object^ sender, System::EventArg
 	currentTool = Tools::Fill;
 	withFillButton->Enabled = false;
 	withoutFillButton->Enabled = false;
+	deselect();
 }
 
 System::Void MainForm::eraserButton_Click(System::Object^ sender, System::EventArgs^ e)
@@ -659,6 +675,7 @@ System::Void MainForm::eraserButton_Click(System::Object^ sender, System::EventA
 	currentTool = Tools::Eraser;
 	withFillButton->Enabled = false;
 	withoutFillButton->Enabled = false;
+	deselect();
 }
 
 System::Void MainForm::pipetteButton_Click(System::Object^ sender, System::EventArgs^ e)
@@ -666,6 +683,7 @@ System::Void MainForm::pipetteButton_Click(System::Object^ sender, System::Event
 	currentTool = Tools::Pipette;
 	withFillButton->Enabled = false;
 	withoutFillButton->Enabled = false;
+	deselect();
 }
 
 System::Void MainForm::sprayButton_Click(System::Object^ sender, System::EventArgs^ e)
@@ -673,6 +691,7 @@ System::Void MainForm::sprayButton_Click(System::Object^ sender, System::EventAr
 	currentTool = Tools::Spray;
 	withFillButton->Enabled = false;
 	withoutFillButton->Enabled = false;
+	deselect();
 }
 
 System::Void MainForm::selectionButton_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -681,10 +700,7 @@ System::Void MainForm::selectionButton_Click(System::Object^ sender, System::Eve
 
 System::Void MainForm::deselectButton_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	draggedFragment = nullptr;
-	pictureBox->Invalidate();
-	deselectButton->Enabled = false;
-	cutButton->Enabled = false;
+	deselect();
 }
 
 System::Void MainForm::cutButton_Click(System::Object^ sender, System::EventArgs^ e)
