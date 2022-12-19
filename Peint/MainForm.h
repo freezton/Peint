@@ -417,7 +417,7 @@ private: System::ComponentModel::IContainer^ components;
 			// brushWidthBar
 			// 
 			this->brushWidthBar->Location = System::Drawing::Point(0, 6);
-			this->brushWidthBar->Maximum = 30;
+			this->brushWidthBar->Maximum = 50;
 			this->brushWidthBar->Minimum = 1;
 			this->brushWidthBar->Name = L"brushWidthBar";
 			this->brushWidthBar->Size = System::Drawing::Size(200, 45);
@@ -428,7 +428,7 @@ private: System::ComponentModel::IContainer^ components;
 			// brushWidhtUpDown
 			// 
 			this->brushWidhtUpDown->Location = System::Drawing::Point(24, 47);
-			this->brushWidhtUpDown->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 30, 0, 0, 0 });
+			this->brushWidhtUpDown->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 50, 0, 0, 0 });
 			this->brushWidhtUpDown->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->brushWidhtUpDown->Name = L"brushWidhtUpDown";
 			this->brushWidhtUpDown->Size = System::Drawing::Size(150, 20);
@@ -1059,7 +1059,7 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label3->AutoSize = true;
 			this->label3->ForeColor = System::Drawing::SystemColors::ControlDarkDark;
-			this->label3->Location = System::Drawing::Point(259, 79);
+			this->label3->Location = System::Drawing::Point(256, 79);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(54, 13);
 			this->label3->TabIndex = 40;

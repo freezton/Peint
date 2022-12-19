@@ -38,6 +38,8 @@ namespace Peint {
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::Label^ label3;
+	private: System::Windows::Forms::Label^ label4;
+	private: System::Windows::Forms::Label^ label5;
 	protected:
 
 	private:
@@ -58,6 +60,8 @@ namespace Peint {
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->label5 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -90,7 +94,7 @@ namespace Peint {
 				static_cast<System::Byte>(204)));
 			this->label2->Location = System::Drawing::Point(553, 113);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(409, 99);
+			this->label2->Size = System::Drawing::Size(409, 110);
 			this->label2->TabIndex = 2;
 			this->label2->Text = L"The program was developed as part of a course project on the subject \"Software De"
 				L"sign\" by a student of group 151002 Protchenko Vladislav";
@@ -106,12 +110,38 @@ namespace Peint {
 			this->label3->TabIndex = 3;
 			this->label3->Text = L"All icons were taken from www.flaticon.com";
 			// 
+			// label4
+			// 
+			this->label4->AllowDrop = true;
+			this->label4->AutoSize = true;
+			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label4->Location = System::Drawing::Point(553, 253);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(189, 25);
+			this->label4->TabIndex = 4;
+			this->label4->Text = L"GitHub: @freezton";
+			// 
+			// label5
+			// 
+			this->label5->AllowDrop = true;
+			this->label5->AutoSize = true;
+			this->label5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label5->Location = System::Drawing::Point(553, 224);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(127, 25);
+			this->label5->TabIndex = 5;
+			this->label5->Text = L"Version: 1.0";
+			// 
 			// AboutForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Window;
 			this->ClientSize = System::Drawing::Size(974, 533);
+			this->Controls->Add(this->label5);
+			this->Controls->Add(this->label4);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->label1);
