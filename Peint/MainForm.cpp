@@ -438,7 +438,8 @@ System::Void MainForm::pictureBox_MouseMove(System::Object^ sender, System::Wind
 		{
 			tempBMP = (Bitmap^)bmp->Clone();
 			tempCanvas = Graphics::FromImage(tempBMP);
-			if (rect.Width != 0 && rect.Height != 0) {
+			if (rect.Width != 0 && rect.Height != 0)
+			{
 				if (needFill || (rect.Width < pen->Width * 2 || rect.Height < pen->Width * 2))
 					tempCanvas->FillRectangle(brush, rect);
 				else
@@ -577,6 +578,8 @@ System::Void MainForm::openFile() {
 		bmp = file->getBmp();
 		pictureBox->Width = bmp->Width;
 		pictureBox->Height = bmp->Height;
+		pictureBoxPanel->Width = Math::Min(pictureBox->Width + 1, 1327);
+		pictureBoxPanel->Height = Math::Min(pictureBox->Height + 1, 598);
 		pictureBox->Image = bmp;
 		Canvas = Graphics::FromImage(bmp);
 		Canvas->FillPie(gcnew SolidBrush(bmp->GetPixel(1, 1)), 1, 1, 1, 1, 0, 360);
@@ -713,6 +716,7 @@ System::Void MainForm::cutButton_Click(System::Object^ sender, System::EventArgs
 	draggedFragment = nullptr;
 	deselectButton->Enabled = false;
 	cutButton->Enabled = false;
+	history->push((Bitmap^)bmp->Clone());
 }
 
 System::Void MainForm::withFillButton_CheckedChanged(System::Object^ sender, System::EventArgs^ e)

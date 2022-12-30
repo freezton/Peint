@@ -74,9 +74,6 @@ namespace Peint {
 		};
 		Tools currentTool = Tools::Brush;
 
-		//Point rectStart;
-		//Point rectEnd;
-		//Drawing::Size rectSize;
 
 	private: System::Windows::Forms::PictureBox^ pictureBox;
 
@@ -184,6 +181,7 @@ private: System::Windows::Forms::Label^ label4;
 private: System::Windows::Forms::RadioButton^ withoutFillButton;
 private: System::Windows::Forms::RadioButton^ withFillButton;
 private: System::Windows::Forms::Timer^ sprayTimer;
+private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
 
 private: System::ComponentModel::IContainer^ components;
 
@@ -282,6 +280,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->cutButton = (gcnew System::Windows::Forms::Button());
 			this->sprayTimer = (gcnew System::Windows::Forms::Timer(this->components));
+			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox))->BeginInit();
 			this->menuStrip->SuspendLayout();
 			this->pictureBoxPanel->SuspendLayout();
@@ -420,14 +419,14 @@ private: System::ComponentModel::IContainer^ components;
 			this->brushWidthBar->Maximum = 50;
 			this->brushWidthBar->Minimum = 1;
 			this->brushWidthBar->Name = L"brushWidthBar";
-			this->brushWidthBar->Size = System::Drawing::Size(200, 45);
+			this->brushWidthBar->Size = System::Drawing::Size(290, 45);
 			this->brushWidthBar->TabIndex = 7;
 			this->brushWidthBar->Value = 3;
 			this->brushWidthBar->ValueChanged += gcnew System::EventHandler(this, &MainForm::brushWidthBar_ValueChanged);
 			// 
 			// brushWidhtUpDown
 			// 
-			this->brushWidhtUpDown->Location = System::Drawing::Point(24, 47);
+			this->brushWidhtUpDown->Location = System::Drawing::Point(69, 47);
 			this->brushWidhtUpDown->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 50, 0, 0, 0 });
 			this->brushWidhtUpDown->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->brushWidhtUpDown->Name = L"brushWidhtUpDown";
@@ -556,9 +555,9 @@ private: System::ComponentModel::IContainer^ components;
 			this->selectionButton->BackColor = System::Drawing::SystemColors::ControlLight;
 			this->selectionButton->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"selectionButton.BackgroundImage")));
 			this->selectionButton->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-			this->selectionButton->Location = System::Drawing::Point(10, 9);
+			this->selectionButton->Location = System::Drawing::Point(131, 12);
 			this->selectionButton->Name = L"selectionButton";
-			this->selectionButton->Size = System::Drawing::Size(60, 60);
+			this->selectionButton->Size = System::Drawing::Size(60, 58);
 			this->selectionButton->TabIndex = 16;
 			this->selectionButton->UseVisualStyleBackColor = false;
 			this->selectionButton->Click += gcnew System::EventHandler(this, &MainForm::selectionButton_Click);
@@ -571,18 +570,19 @@ private: System::ComponentModel::IContainer^ components;
 			this->panel3->Controls->Add(this->brushWidthBar);
 			this->panel3->Location = System::Drawing::Point(427, 30);
 			this->panel3->Name = L"panel3";
-			this->panel3->Size = System::Drawing::Size(200, 94);
+			this->panel3->Size = System::Drawing::Size(293, 94);
 			this->panel3->TabIndex = 16;
 			// 
 			// Size
 			// 
 			this->Size->AutoSize = true;
 			this->Size->ForeColor = System::Drawing::SystemColors::ControlDarkDark;
-			this->Size->Location = System::Drawing::Point(82, 79);
+			this->Size->Location = System::Drawing::Point(130, 79);
 			this->Size->Name = L"Size";
 			this->Size->Size = System::Drawing::Size(27, 13);
 			this->Size->TabIndex = 39;
 			this->Size->Text = L"Size";
+			this->Size->Click += gcnew System::EventHandler(this, &MainForm::Size_Click);
 			// 
 			// panel4
 			// 
@@ -1016,9 +1016,9 @@ private: System::ComponentModel::IContainer^ components;
 			this->panel1->Controls->Add(this->withoutFillButton);
 			this->panel1->Controls->Add(this->withFillButton);
 			this->panel1->Controls->Add(this->label3);
-			this->panel1->Location = System::Drawing::Point(813, 30);
+			this->panel1->Location = System::Drawing::Point(1053, 30);
 			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(567, 94);
+			this->panel1->Size = System::Drawing::Size(327, 94);
 			this->panel1->TabIndex = 1;
 			// 
 			// withoutFillButton
@@ -1030,7 +1030,7 @@ private: System::ComponentModel::IContainer^ components;
 				static_cast<System::Byte>(204)));
 			this->withoutFillButton->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)),
 				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
-			this->withoutFillButton->Location = System::Drawing::Point(17, 17);
+			this->withoutFillButton->Location = System::Drawing::Point(49, 26);
 			this->withoutFillButton->Name = L"withoutFillButton";
 			this->withoutFillButton->Size = System::Drawing::Size(100, 24);
 			this->withoutFillButton->TabIndex = 42;
@@ -1047,7 +1047,7 @@ private: System::ComponentModel::IContainer^ components;
 				static_cast<System::Byte>(204)));
 			this->withFillButton->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)),
 				static_cast<System::Int32>(static_cast<System::Byte>(64)));
-			this->withFillButton->Location = System::Drawing::Point(123, 17);
+			this->withFillButton->Location = System::Drawing::Point(198, 26);
 			this->withFillButton->Name = L"withFillButton";
 			this->withFillButton->Size = System::Drawing::Size(77, 24);
 			this->withFillButton->TabIndex = 41;
@@ -1059,7 +1059,7 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label3->AutoSize = true;
 			this->label3->ForeColor = System::Drawing::SystemColors::ControlDarkDark;
-			this->label3->Location = System::Drawing::Point(256, 79);
+			this->label3->Location = System::Drawing::Point(141, 79);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(54, 13);
 			this->label3->TabIndex = 40;
@@ -1072,9 +1072,9 @@ private: System::ComponentModel::IContainer^ components;
 				static_cast<System::Byte>(204)));
 			this->deselectButton->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)),
 				static_cast<System::Int32>(static_cast<System::Byte>(64)));
-			this->deselectButton->Location = System::Drawing::Point(73, 9);
+			this->deselectButton->Location = System::Drawing::Point(14, 12);
 			this->deselectButton->Name = L"deselectButton";
-			this->deselectButton->Size = System::Drawing::Size(92, 28);
+			this->deselectButton->Size = System::Drawing::Size(111, 58);
 			this->deselectButton->TabIndex = 17;
 			this->deselectButton->Text = L"Deselect";
 			this->deselectButton->UseVisualStyleBackColor = true;
@@ -1087,16 +1087,16 @@ private: System::ComponentModel::IContainer^ components;
 			this->panel5->Controls->Add(this->cutButton);
 			this->panel5->Controls->Add(this->deselectButton);
 			this->panel5->Controls->Add(this->selectionButton);
-			this->panel5->Location = System::Drawing::Point(633, 30);
+			this->panel5->Location = System::Drawing::Point(726, 29);
 			this->panel5->Name = L"panel5";
-			this->panel5->Size = System::Drawing::Size(174, 94);
+			this->panel5->Size = System::Drawing::Size(321, 96);
 			this->panel5->TabIndex = 41;
 			// 
 			// label4
 			// 
 			this->label4->AutoSize = true;
 			this->label4->ForeColor = System::Drawing::SystemColors::ControlDarkDark;
-			this->label4->Location = System::Drawing::Point(60, 79);
+			this->label4->Location = System::Drawing::Point(136, 79);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(51, 13);
 			this->label4->TabIndex = 41;
@@ -1109,9 +1109,9 @@ private: System::ComponentModel::IContainer^ components;
 				static_cast<System::Byte>(204)));
 			this->cutButton->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)),
 				static_cast<System::Int32>(static_cast<System::Byte>(64)));
-			this->cutButton->Location = System::Drawing::Point(73, 41);
+			this->cutButton->Location = System::Drawing::Point(197, 12);
 			this->cutButton->Name = L"cutButton";
-			this->cutButton->Size = System::Drawing::Size(92, 28);
+			this->cutButton->Size = System::Drawing::Size(111, 57);
 			this->cutButton->TabIndex = 18;
 			this->cutButton->Text = L"Cut";
 			this->cutButton->UseVisualStyleBackColor = true;
@@ -1121,6 +1121,11 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->sprayTimer->Interval = 50;
 			this->sprayTimer->Tick += gcnew System::EventHandler(this, &MainForm::sprayTimer_Tick);
+			// 
+			// openFileDialog1
+			// 
+			this->openFileDialog1->FileName = L"openFileDialog1";
+			this->openFileDialog1->FileOk += gcnew System::ComponentModel::CancelEventHandler(this, &MainForm::openFileDialog1_FileOk);
 			// 
 			// MainForm
 			// 
@@ -1230,5 +1235,9 @@ private: System::ComponentModel::IContainer^ components;
 	private: System::Void MainForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e);
 	private: System::Void aboutToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void deselect();
+private: System::Void openFileDialog1_FileOk(System::Object^ sender, System::ComponentModel::CancelEventArgs^ e) {
+}
+private: System::Void Size_Click(System::Object^ sender, System::EventArgs^ e) {
+}
 };
 }
